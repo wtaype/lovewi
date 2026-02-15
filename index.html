@@ -214,7 +214,7 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
 .dpn, .movil .wilogo{display:none}
 .dpc{display:flex;justify-content:center;align-items:center}
 .dpw{display:flex;justify-content:space-between;align-items:center}
-.dpr,.movil .winav{display:flex;flex-direction: row; flex-wrap: wrap;}
+.dpr,.movil .winav,.movil .nv_right{display:flex;flex-direction: row; flex-wrap: wrap;}
 .dpvc{display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center}
 
 /* ==================== TEMAS ==================== */
@@ -238,15 +238,13 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
 .wilogo i{font-size:var(--fz_l1)}
 .wilogo:hover{transform:scale(1.05);filter:drop-shadow(0 0 0.5vh var(--mco))}
 .winav{display:flex;gap:.3vh}
-.nv_item{display:flex;align-items:center;gap:0.4vw;padding:0.7vh 1vw;background:var(--bg1);border-radius:0.8vh;color:var(--tx);text-decoration:none;font-size:var(--fz_m1);font-weight:500;transition:all var(--tr_f);border:1px solid transparent}
+.nv_item, .wibtn_auth{display:flex;align-items:center;gap:0.4vw;padding:0.7vh 1vw;background:var(--bg1);border-radius:0.8vh;color:var(--tx);text-decoration:none;font-size:var(--fz_m1);font-weight:500;transition:all var(--tr_f);border:1px solid transparent}
 .nv_item i{font-size:var(--fz_m3)}
 .nv_item:hover{background:var(--bg5);border-color:var(--mco);transform:translateY(-0.2vh);box-shadow:0 0.4vh 1vh rgba(0,0,0,0.1)}
-.nv_item.active{background:var(--mco);color:var(--txa);box-shadow:0 0.4vh 1.2vh rgba(0,0,0,0.15)}
-.nv_item.active i{color:var(--txa)}
+.nv_item.active, .wibtn_auth:hover{background:var(--mco);color:var(--txa);box-shadow:0 0.4vh 1.2vh rgba(0,0,0,0.15)}
+.nv_item.active i, .wibtn_auth:hover i{color:var(--txa)}
 .nv_right{display:flex;align-items:center;gap:.5vh}
-.wibtn_auth{display:flex;align-items:center;gap:0.4vw;padding:0.8vh 1.2vw;background:var(--bg1);border:none;border-radius:0.8vh;color:var(--tx);font-size:var(--fz_m2);font-weight:500;cursor:pointer;transition:all var(--tr_f)}
-.wibtn_auth i{font-size:var(--fz_m3)}
-.wibtn_auth:hover{background:var(--mco);color:var(--txa);border-color:var(--mco);box-shadow:0 0.4vh 1vh rgba(0,0,0,0.15);transform:translateY(-0.2vh);transition:var(--tr_m)}
+.wibtn_auth:hover, .wibtn_auth:hover i{cursor: pointer;}
 .wiauth{display:flex;gap:.5vh;min-width:13.9vw}
 .sesion img{max-width:3vh}
 .sesion{height:4.5vh;display:flex;align-items:center;gap:.8vh;cursor:pointer;padding-inline:1.5vh;background:var(--bg1);border-radius:1.2vh}
@@ -254,7 +252,8 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
 .sesion span,.bt_salir span,.bt_salir i{color:var(--tx)}
 .user-avatar{height:80%;box-shadow:var(--bs_m);border-radius:50%}
 .bt_salir{background:var(--bg1);border-radius:1.2vh;border:none;padding-inline:2vh;cursor:pointer}
-.bt_salir:hover{transform:translateY(-.2vh);transition:var(--tr_s)}
+.bt_salir:hover{transform:translateY(-.2vh);transition:var(--tr_s);}
+.bt_salir span:hover{color: var(--txa);}
 .ski_auth{background:var(--bg1);width:100%;height:4.2vh;border-radius:.5vh}
 .foo{width:100%;text-align:center;padding-block:1.5vh 1vh;background:var(--wb);border-radius:1vh 1vh 0 0}
 .foo *{font-size:var(--fz_s2);margin-inline:.3vh;color:var(--tx);}
@@ -263,7 +262,7 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
 @media (max-width:768px){
 #wimain{padding:7vh 0}
 .wiheader{height:auto;padding:1.5vh 4vh 1.5vh 1.5vh;position:relative}
-.winav{display:none}
+.winav,.nv_right{display:none}
 .nv_left{justify-content:space-between;width:100%}
 .wilogo{font-size:var(--fz_m4)}
 .winav{width:100%;flex-direction:column;gap:1vh}
@@ -302,11 +301,12 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
         <i class="fas fa-circle-info"></i> <span>Acerca</span>
       </a>
     </nav>
-    <div class="wimenu dpn"><i class="fas fa-bars"></i></div>
   </div><!-- LADO IZQUIERDO: Logo + Navegación -->
   <div class="nv_right">
+    <a href="/smile" class="nv_item" data-page="smile"><i class="fa-solid fa-gauge"></i> <span>Dashboard </span></a>
     <div class="wiauth"><div class="ski_auth"></div></div>
   </div> 
+ <div class="wimenu dpn"><i class="fas fa-bars"></i></div>
 </header>
 <main id="wimain"></main>
 <div id="wiTema">
