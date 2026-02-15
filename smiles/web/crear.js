@@ -1,57 +1,58 @@
 import './crear.css';
 import $ from 'jquery';
 import { wicopy, wiSpin, wiTip, getls, Notificacion } from '../widev.js';
-import { genURL, genPublica, genPrivada, plantillas, ico, bg } from '../parametros.js';
+import { genURL, genPublica, genPrivada, plantillas, pls, bg } from '../parametros.js';
 
 const esAuth = () => !!getls('wiSmile');
+const cache = new Map();
 
 export const render = () => `
 <div class="crear">
   <div class="cr_izq">
     <div class="cr_cab">
-      <h2><i class="fas fa-wand-magic-sparkles"></i> Crea tu Mensaje Especial</h2>
+      <h2><i class="fas fa-wand-magic-sparkles"></i> Crea tu Mensaje</h2>
       <div class="cr_accs">
-        <button class="cr_acc" id="accVer"><i class="fas fa-eye"></i> Vista previa</button>
-        <button class="cr_acc" id="accCopiar"><i class="fas fa-copy"></i> Copiar</button>
-        <button class="cr_acc borrar" id="accLimpiar"><i class="fas fa-rotate-left"></i> Limpiar</button>
+        <button class="cr_acc" id="accVer" ${wiTip('Vista previa')}><i class="fas fa-eye"></i></button>
+        <button class="cr_acc" id="accCopiar" ${wiTip('Copiar enlace')}><i class="fas fa-copy"></i></button>
+        <button class="cr_acc borrar" id="accLimpiar" ${wiTip('Limpiar todo')}><i class="fas fa-rotate-left"></i></button>
       </div>
     </div>
 
     <div class="cr_sec">
-      <h3 class="cr_stit"><i class="fas fa-pen-fancy"></i> Personaliza el mensaje</h3>
+      <h3 class="cr_stit"><i class="fas fa-pen-fancy"></i> Personaliza</h3>
       <div class="cr_form">
         <div class="cr_row">
           <div class="cr_campo">
-            <label>De <small>¿Quién envía?</small></label>
-            <div class="cr_inp"><i class="fas fa-user"></i><input id="cDe" maxlength="30" placeholder="Tu nombre"></div>
+            <label>Para <small>¿A quién va?</small></label>
+            <div class="cr_inp"><i class="fas fa-heart"></i><input id="cPara" maxlength="30" placeholder="Para"></div>
           </div>
           <div class="cr_campo">
-            <label>Para <small>¿A quién va?</small></label>
-            <div class="cr_inp"><i class="fas fa-heart"></i><input id="cPara" maxlength="30" placeholder="Su nombre"></div>
+            <label>De <small>Tu nombre</small></label>
+            <div class="cr_inp"><i class="fas fa-user"></i><input id="cDe" maxlength="30" placeholder="De ti"></div>
           </div>
         </div>
         <div class="cr_campo">
           <label>Mensaje <small id="cCont">0/200</small></label>
-          <textarea id="cMsg" maxlength="200" rows="3" placeholder="Escribe algo desde el corazón..."></textarea>
+          <textarea id="cMsg" maxlength="200" rows="3" placeholder="Algo desde el corazón..."></textarea>
         </div>
         <div class="cr_campo">
           <label>Música <small>URL opcional</small></label>
-          <div class="cr_inp"><i class="fas fa-music"></i><input id="cMusica" maxlength="200" placeholder="https://ejemplo.com/cancion.mp3"></div>
+          <div class="cr_inp"><i class="fas fa-music"></i><input id="cMusica" maxlength="200" placeholder="https://ejemplo.com/musica.mp3"></div>
         </div>
         <div class="cr_row">
           <div class="cr_campo">
-            <label>Link personalizado <small>Mín. 3 caracteres</small></label>
+            <label>Link <small>Mín. 3 caracteres</small></label>
             <div class="cr_inp cr_inp_link">
               <span class="cr_pre">${location.origin}/${esAuth() ? '?' : '?ver='}</span>
-              <input id="cLink" maxlength="30" placeholder="${esAuth() ? 'paratiDeysi' : 'miamor'}" spellcheck="false">
+              <input id="cLink" maxlength="30" placeholder="auto" spellcheck="false">
               <span class="cr_st" id="linkStatus"></span>
             </div>
           </div>
           <div class="cr_campo">
-            <label>Plantilla <small>Elige el estilo</small></label>
+            <label>Plantilla</label>
             <div class="cr_select">
               <select id="selPlantilla">
-                ${Object.keys(plantillas).map((k, i) => `<option value="${k}"${!i ? ' selected' : ''}>${k}</option>`).join('')}
+                ${Object.keys(plantillas).map((k, i) => `<option value="${k}"${!i ? ' selected' : ''}>${plantillas[k].e} ${k}</option>`).join('')}
               </select>
               <i class="fas fa-chevron-down"></i>
             </div>
@@ -61,29 +62,29 @@ export const render = () => `
     </div>
 
     <div class="cr_sec cr_save">
-      <button class="cr_gbtn ${esAuth() ? '' : 'cr_gbtn_pub'}" id="${esAuth() ? 'guardarNube' : 'genCorta'}">
-        <i class="fas fa-cloud-arrow-up"></i> ${esAuth() ? 'Guardar y obtener enlace' : 'Generar enlace público'}
+      <button class="cr_gbtn ${esAuth() ? '' : 'cr_gbtn_pub'}" id="guardarNube">
+        <i class="fas fa-cloud-arrow-up"></i> ${esAuth() ? 'Guardar en nube' : 'Generar enlace'}
       </button>
       
       <div class="cr_url_row">
-        <label>Enlace corto</label>
+        <label>Corto</label>
         <div class="cr_url_box cr_url_corta">
-          <input id="urlCorta" readonly placeholder="${esAuth() ? 'Se generará al guardar' : 'Se generará al guardar en la nube'}">
+          <input id="urlCorta" readonly placeholder="Se generará al guardar">
           <button class="cr_ubtn" id="copCorta" ${wiTip('Copiar')}><i class="fas fa-copy"></i></button>
           <button class="cr_ubtn" id="abrCorta" ${wiTip('Abrir')}><i class="fas fa-arrow-up-right-from-square"></i></button>
         </div>
       </div>
       
       <div class="cr_url_row">
-        <label>Enlace completo</label>
+        <label>Completo</label>
         <div class="cr_url_box">
-          <input id="urlLarga" readonly placeholder="Se genera automáticamente al escribir">
+          <input id="urlLarga" readonly placeholder="Se genera al escribir">
           <button class="cr_ubtn" id="copLarga" ${wiTip('Copiar')}><i class="fas fa-copy"></i></button>
           <button class="cr_ubtn" id="abrLarga" ${wiTip('Abrir')}><i class="fas fa-arrow-up-right-from-square"></i></button>
         </div>
       </div>
       
-      ${esAuth() ? '' : '<p class="cr_nota"><i class="fas fa-triangle-exclamation"></i> Sin cuenta los enlaces expiran en 30 días. <a href="/smile">Crear cuenta gratis →</a></p>'}
+      ${esAuth() ? '' : '<p class="cr_nota"><i class="fas fa-triangle-exclamation"></i> Sin cuenta expiran en 30 días. <a href="/smile">Crear cuenta →</a></p>'}
     </div>
   </div>
 
@@ -101,8 +102,8 @@ export const render = () => `
           <p class="pv_lbl">Para ti</p>
           <h2 class="pv_nom" id="pvPara">___</h2>
           <span class="pv_cor">❤️</span>
-          <p class="pv_msg" id="pvMsg">Tu mensaje aparecerá aquí...</p>
-          <p class="pv_de">Con amor, <span id="pvDe">___</span></p>
+          <p class="pv_msg" id="pvMsg">Tu mensaje aquí...</p>
+          <p class="pv_de">Con amor, <span id="pvDe">Amigo</span></p>
         </div>
       </div>
     </div>
@@ -112,7 +113,7 @@ export const render = () => `
         <div class="cr_share_btns">
           <a class="cr_sbtn cr_wa" id="compWA" href="#" target="_blank" ${wiTip('WhatsApp')}><i class="fab fa-whatsapp"></i></a>
           <a class="cr_sbtn cr_tg" id="compTG" href="#" target="_blank" ${wiTip('Telegram')}><i class="fab fa-telegram"></i></a>
-          <button class="cr_sbtn cr_nt" id="compNat" ${wiTip('Más opciones')}><i class="fas fa-ellipsis"></i></button>
+          <button class="cr_sbtn cr_nt" id="compNat" ${wiTip('Copiar Link')}><i class="fa-solid fa-link"></i></button>
         </div>
       </div>
     </div>
@@ -120,27 +121,31 @@ export const render = () => `
 </div>`;
 
 export const init = () => {
-  let pl = 'Amor', linkTimer = null;
+  let pl = 'Amor', linkTimer = null, autoTimer = null, autoInProgress = false;
   const auth = esAuth();
+  
   const vals = () => ({
     link: $('#cLink').val().trim().replace(/[^a-záéíóúñA-Z0-9]/gi, ''),
-    de: $('#cDe').val().trim(),
+    de: $('#cDe').val().trim() || 'Amigo',
     para: $('#cPara').val().trim(),
     msg: $('#cMsg').val().trim(),
     musica: $('#cMusica').val().trim()
   });
-  const alerta = () => Notificacion('Completa link y al menos un nombre 💕', 'warning');
 
   const validarLink = async (id) => {
-    if (!id || id.length < 3) return $('#linkStatus').html('<i class="fas fa-minus" style="color:var(--tx3)"></i>');
+    if (!id || id.length < 3) return $('#linkStatus').html('<i class="fas fa-minus" style="color:var(--tx3)"></i>'), false;
+    if (cache.has(id)) {
+      const exists = cache.get(id);
+      $('#linkStatus').html(exists ? '<i class="fas fa-circle-xmark" style="color:var(--error)"></i>' : '<i class="fas fa-circle-check" style="color:var(--success)"></i>');
+      return !exists;
+    }
     $('#linkStatus').html('<i class="fas fa-spinner fa-spin" style="color:var(--tx3)"></i>');
     try {
       const mod = auth ? await import('../smile/wiloves.js') : await import('../smile/publico.js');
-      const ok = !(await mod.existe(id));
-      $('#linkStatus').html(ok
-        ? '<i class="fas fa-circle-check" style="color:var(--success)"></i>'
-        : '<i class="fas fa-circle-xmark" style="color:var(--error)"></i>');
-      return ok;
+      const exists = await mod.existe(id);
+      cache.set(id, exists);
+      $('#linkStatus').html(exists ? '<i class="fas fa-circle-xmark" style="color:var(--error)"></i>' : '<i class="fas fa-circle-check" style="color:var(--success)"></i>');
+      return !exists;
     } catch { 
       $('#linkStatus').html('<i class="fas fa-triangle-exclamation" style="color:var(--warning)"></i>');
       return false;
@@ -148,41 +153,38 @@ export const init = () => {
   };
 
   const generarLinkAuto = async () => {
-    const { de, para } = vals();
-    if (!de && !para) return;
-    
-    const base = (para || de).toLowerCase().replace(/[^a-záéíóúñ0-9]/gi, '').substring(0, 15);
-    if (!base || base.length < 3) return;
-    
-    let link = base;
-    let contador = 1;
-    
-    while (true) {
-      const ok = await validarLink(link);
-      if (ok) {
-        $('#cLink').val(link).trigger('input');
-        break;
-      }
-      link = base + contador;
-      contador++;
-      if (contador > 99) break;
+    if (autoInProgress || $('#cLink').val()) return;
+    const { para } = vals();
+    if (!para) return;
+    autoInProgress = true;
+    const base = para.toLowerCase().replace(/[^a-záéíóúñ0-9]/gi, '').substring(0, 12);
+    if (base.length < 3) return autoInProgress = false;
+    const hash = Date.now().toString(36).slice(-3);
+    let link = base, cnt = 1;
+    for (let i = 0; i < 30; i++) {
+      if (await validarLink(link)) { $('#cLink').val(link).trigger('input'); autoInProgress = false; return; }
+      link = i < 10 ? `${base}${cnt++}` : `${base}${hash}${cnt++}`;
     }
+    Notificacion('Prueba otro nombre base 🙏', 'warning');
+    autoInProgress = false;
   };
 
   const actURL = () => {
-    const { de, para, msg } = vals();
-    const url = (de || para) ? genURL(pl, de, para, msg) : '';
+    const { de, para, msg, musica } = vals();
+    const url = para ? genURL(pl, de, para, msg, musica) : '';
     $('#urlLarga').val(url);
     return url;
   };
 
   const actVista = () => {
     const { de, para, msg } = vals();
-    $('#pvDe').text(de || '___');
+    const m = plantillas[pl] || plantillas.Amor;
+    $('#pvDe').text(de);
     $('#pvPara').text(para || '___');
-    $('#pvMsg').text(msg || 'Tu mensaje aparecerá aquí...');
+    $('#pvMsg').text(msg || 'Tu mensaje aquí...');
     $('#cCont').text(`${msg.length}/200`);
-    $('#miniVista').css('background', bg[pl] || bg.Amor);
+    $('#miniVista').css('background', m.b);
+    $('#pvCor, .pv_cor').text(m.e);
     actURL();
   };
 
@@ -195,115 +197,110 @@ export const init = () => {
   const limpiar = () => {
     $('#cDe, #cPara, #cMsg, #cLink, #cMusica, #urlCorta, #urlLarga').val('');
     $('#linkStatus').html('');
+    cache.clear();
     actVista();
   };
 
   const mejor = () => $('#urlCorta').val() || $('#urlLarga').val();
 
-  $(document).on('input', '#cLink', function () {
+  // ✅ EVENTOS
+  $(document).on('input.cr', '#cLink', function () {
     const v = $(this).val().replace(/[^a-záéíóúñA-Z0-9]/gi, '');
     $(this).val(v);
     clearTimeout(linkTimer);
-    linkTimer = setTimeout(() => validarLink(v), 500);
+    linkTimer = setTimeout(() => validarLink(v), 600);
   });
 
-  $(document).on('change', '#selPlantilla', function () {
-    pl = $(this).val();
-    actVista();
-  });
+  $(document).on('change.cr', '#selPlantilla', function () { pl = $(this).val(); actVista(); });
+  $(document).on('input.cr', '#cPara', function () { actVista(); clearTimeout(autoTimer); autoTimer = setTimeout(() => generarLinkAuto(), 1000); });
+  $(document).on('input.cr', '#cDe, #cMsg, #cMusica', actVista);
 
-  let autoTimer = null;
-  $(document).on('input', '#cDe, #cPara', function () {
-    actVista();
-    clearTimeout(autoTimer);
-    autoTimer = setTimeout(() => {
-      if (!$('#cLink').val()) generarLinkAuto();
-    }, 800);
-  });
-
-  $(document).on('input', '#cMsg, #cMusica', () => {
-    actVista();
-    const url = mejor();
-    if (url) actShare(url);
-  });
-
-  $(document).on('click', '.cr_disp', function () {
+  $(document).on('click.cr', '.cr_disp', function () {
     $('.cr_disp').removeClass('active');
     $(this).addClass('active');
     $('#marco').toggleClass('escritorio', $(this).data('disp') === 'escritorio');
   });
 
-  $(document).on('click', '#accVer', () => {
+  $(document).on('click.cr', '#accVer', () => {
     const url = mejor() || actURL();
-    url ? window.open(url, '_blank') : alerta();
+    url ? window.open(url, '_blank') : Notificacion('Completa los campos 💕', 'warning');
   });
 
-  $(document).on('click', '#accCopiar', function () {
+  $(document).on('click.cr', '#accCopiar', function () {
     const url = mejor() || actURL();
-    url ? (wicopy(url, this, '¡Copiado!'), actShare(url)) : alerta();
+    url ? (wicopy(url, this, '¡Copiado!'), actShare(url)) : Notificacion('Completa los campos 💕', 'warning');
   });
 
-  $(document).on('click', '#copLarga', function () {
+  $(document).on('click.cr', '#copLarga, #abrLarga', function (e) {
     const url = $('#urlLarga').val();
-    url ? wicopy(url, this, '¡Copiado!') : Notificacion('No hay enlace generado', 'warning');
+    if (!url) return Notificacion('No hay enlace', 'warning');
+    e.currentTarget.id === 'copLarga' ? wicopy(url, this, '¡Copiado!') : window.open(url, '_blank');
   });
 
-  $(document).on('click', '#abrLarga', () => {
-    const url = $('#urlLarga').val();
-    url ? window.open(url, '_blank') : Notificacion('No hay enlace generado', 'warning');
-  });
-
-  $(document).on('click', '#guardarNube, #genCorta', async function () {
+  // ✅ GUARDAR - CORREGIDO: separar id y data, solo strings en Firebase
+  $(document).on('click.cr', '#guardarNube', async function () {
     const v = vals();
-    if (!v.link || (!v.de && !v.para)) return alerta();
-    if ($('#linkStatus').find('.fa-circle-xmark').length) return Notificacion('Ese link ya existe, elige otro', 'error');
+    if (!v.para) return Notificacion('Completa el nombre 💕', 'warning');
+    
+    if (!v.link) {
+      await generarLinkAuto();
+      v.link = $('#cLink').val().trim();
+      if (!v.link) return Notificacion('No se pudo generar link', 'error');
+    }
+    
+    if ($('#linkStatus').find('.fa-circle-xmark').length) {
+      return Notificacion('Link ocupado, generando otro...', 'warning'), setTimeout(() => { $('#cLink').val(''); generarLinkAuto(); }, 500);
+    }
     
     wiSpin(this, true);
     try {
       const mod = auth ? await import('../smile/wiloves.js') : await import('../smile/publico.js');
-      const id = await mod.guardar({ id: v.link, plantilla: plantillas[pl], nombre: pl, emoji: true, ...v });
-      if (!id) return Notificacion('Link ocupado o error', 'error');
+
+      // ✅ Solo strings planos para Firebase - NUNCA objetos con funciones
+      const id = await mod.guardar(v.link, {
+        plantilla: pls[pl],       // 'amor' (string)
+        nombre: pl,               // 'Amor' (string)
+        de: v.de,
+        para: v.para,
+        msg: v.msg,
+        musica: v.musica,
+        emoji: plantillas[pl].e   // '💕' (string)
+      });
       
+      if (!id) throw new Error('Link ocupado');
+      
+      cache.set(id, true);
       const url = auth ? genPrivada(id) : genPublica(id);
       $('#urlCorta').val(url);
       actShare(url);
       
-      // Copiar automáticamente
-      wicopy(url, this, '¡Enlace copiado! ☁️');
-      Notificacion('¡Enlace generado y copiado! ☁️', 'success');
-      
-      // Limpiar después
-      setTimeout(() => limpiar(), 300000); // 5 minutos
+      wicopy(url, this, '¡Copiado! ☁️');
+      Notificacion('¡Enlace generado! 💌', 'success');
     } catch (e) {
       console.error(e);
-      Notificacion('Error al guardar', 'error');
-    }
-    wiSpin(this, false);
+      Notificacion(e.message || 'Error al guardar', 'error');
+    } finally { wiSpin(this, false); }
   });
 
-  $(document).on('click', '#copCorta', function () {
+  $(document).on('click.cr', '#copCorta, #abrCorta', function (e) {
     const url = $('#urlCorta').val();
-    url ? wicopy(url, this, '¡Copiado!') : Notificacion('Genera el enlace primero', 'warning');
+    if (!url) return Notificacion('Genera el enlace primero', 'warning');
+    e.currentTarget.id === 'copCorta' ? wicopy(url, this, '¡Copiado!') : window.open(url, '_blank');
   });
 
-  $(document).on('click', '#abrCorta', () => {
-    const url = $('#urlCorta').val();
-    url ? window.open(url, '_blank') : Notificacion('Genera el enlace primero', 'warning');
-  });
+  $(document).on('click.cr', '#accLimpiar', () => { limpiar(); Notificacion('Limpiado ✨', 'info'); });
 
-  $(document).on('click', '#accLimpiar', () => {
-    limpiar();
-    Notificacion('Limpiado ✨', 'info');
-  });
-
-  $(document).on('click', '#compNat', (e) => {
+  $(document).on('click.cr', '#compNat', (e) => {
     e.preventDefault();
     const url = mejor();
-    if (!url) return alerta();
+    if (!url) return Notificacion('Completa los campos 💕', 'warning');
     navigator.share ? navigator.share({ title: 'Lovewi 💌', text: 'Mensaje especial', url }) : wicopy(url, '#compNat', '¡Copiado!');
   });
 
   actVista();
 };
 
-export const cleanup = () => $(document).off('click input change', '.cr_disp, #accVer, #accCopiar, #copLarga, #abrLarga, #guardarNube, #genCorta, #copCorta, #abrCorta, #accLimpiar, #compNat, #cDe, #cPara, #cMsg, #cLink, #cMusica, #selPlantilla');
+export const cleanup = () => {
+  $(document).off('.cr');
+  cache.clear();
+};

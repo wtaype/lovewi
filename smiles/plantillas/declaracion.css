@@ -1,0 +1,22 @@
+.pl_declaracion{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,#e74c3c,#ff8a80,#fce4e4)}
+.pl_declaracion_fondo{position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(255,255,255,.3),transparent 60%)}
+.pl_declaracion_petalos{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.pl_dec_petalo{position:absolute;top:-5vh;font-size:3vh;animation:dec_fall linear forwards}
+@keyframes dec_fall{0%{top:-5vh;opacity:1;transform:rotate(0deg) translateX(0)}100%{top:110%;opacity:0;transform:rotate(180deg) translateX(5vh)}}
+.pl_declaracion_contenido{position:relative;z-index:2;text-align:center;padding:4vh;max-width:55vh;animation:dec_in .8s cubic-bezier(.4,0,.2,1)}
+@keyframes dec_in{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+.pl_declaracion_sobre{font-size:var(--fz_x2);color:rgba(255,255,255,.8);margin-bottom:2vh;animation:dec_sobre 1s .3s both}
+@keyframes dec_sobre{from{opacity:0;transform:translateY(-3vh) rotate(-15deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
+.pl_declaracion_para{font-size:var(--fz_x3);font-weight:900;color:#fff;text-shadow:0 .3vh 1.2vh rgba(0,0,0,.2);margin-bottom:1.5vh}
+.pl_declaracion_emoji{font-size:var(--fz_y1);display:block;margin-bottom:2vh;animation:amor_pulse 1.5s infinite}
+.pl_declaracion_msg{font-size:var(--fz_l1);color:rgba(255,255,255,.95);line-height:1.7;font-style:italic;margin-bottom:2vh;padding:0 2vh}
+.pl_declaracion_de{font-size:var(--fz_m3);color:rgba(255,255,255,.8);margin-bottom:3vh}
+.pl_declaracion_de strong{color:#fff}
+.pl_declaracion_btns{display:flex;gap:1.5vh;justify-content:center;flex-wrap:wrap}
+.pl_dec_si,.pl_dec_no{padding:1.5vh 3vh;border-radius:1vh;font-size:var(--fz_m3);font-weight:700;cursor:pointer;transition:all .3s;border:none}
+.pl_dec_si{background:#fff;color:#e74c3c;box-shadow:0 .5vh 1.5vh rgba(0,0,0,.2)}
+.pl_dec_si:hover{transform:scale(1.08);box-shadow:0 .8vh 2vh rgba(0,0,0,.3)}
+.pl_dec_no{background:rgba(255,255,255,.2);color:#fff;backdrop-filter:blur(.5vh)}
+.pl_dec_confeti{position:fixed;top:-5vh;font-size:3vh;z-index:9999;animation:dec_confeti 2.5s linear forwards;pointer-events:none}
+@keyframes dec_confeti{0%{top:-5vh;opacity:1}100%{top:110vh;opacity:0;transform:rotate(720deg)}}
+.pl_musica_dec{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}

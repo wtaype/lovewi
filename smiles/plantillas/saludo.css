@@ -1,0 +1,17 @@
+.pl_saludo{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,#ff9a3c,#ffcc02,#fff8e1)}
+.pl_saludo_fondo{position:absolute;inset:0;background:radial-gradient(circle at 50% 20%,rgba(255,255,255,.5),transparent 70%)}
+.pl_saludo_rayos{position:absolute;top:-20vh;left:50%;transform:translateX(-50%);width:100vh;height:100vh;pointer-events:none;opacity:.15}
+.pl_saludo_rayo{position:absolute;top:50%;left:50%;width:2px;height:50vh;background:linear-gradient(to bottom,rgba(255,255,255,.8),transparent);transform-origin:top center;animation:saludo_rayo 8s linear infinite}
+@keyframes saludo_rayo{from{transform:rotate(var(--r,0deg))}to{transform:rotate(calc(var(--r,0deg) + 360deg))}}
+.pl_saludo_contenido{position:relative;z-index:2;text-align:center;padding:4vh;max-width:60vh;animation:saludo_in .8s cubic-bezier(.4,0,.2,1)}
+@keyframes saludo_in{from{opacity:0;transform:translateY(3vh)}to{opacity:1;transform:translateY(0)}}
+.pl_saludo_sol{font-size:var(--fz_x2);color:rgba(139,109,0,.6);margin-bottom:2vh;animation:saludo_sol 3s infinite}
+@keyframes saludo_sol{0%,100%{transform:rotate(0deg) scale(1)}50%{transform:rotate(15deg) scale(1.1)}}
+.pl_saludo_label{font-size:var(--fz_m2);color:rgba(139,109,0,.6);text-transform:uppercase;letter-spacing:.3vh;margin-bottom:1vh}
+.pl_saludo_para{font-size:var(--fz_x3);font-weight:900;color:#5a3d1a;text-shadow:0 .2vh .8vh rgba(139,109,0,.15);margin-bottom:1.5vh}
+.pl_saludo_emoji{font-size:var(--fz_y1);display:block;margin-bottom:2vh;animation:amor_pulse 2s infinite}
+.pl_saludo_msg{font-size:var(--fz_m3);color:rgba(90,61,26,.85);line-height:1.7;font-style:italic;margin-bottom:2vh;padding:0 2vh}
+.pl_saludo_de{font-size:var(--fz_m2);color:rgba(139,109,0,.7)}
+.pl_saludo_de strong{color:#5a3d1a;font-weight:700}
+.pl_musica_saludo{background:rgba(90,61,26,.15);border-color:rgba(90,61,26,.3);color:#5a3d1a}
+.pl_musica_saludo:hover{background:rgba(90,61,26,.3)}

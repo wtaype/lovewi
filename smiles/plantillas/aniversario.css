@@ -1,0 +1,14 @@
+.pl_aniversario{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,#ffd700,#ffed4e,#fff9db)}
+.pl_aniversario_fondo{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.4),transparent 70%)}
+.pl_aniversario_particulas{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.pl_aniversario_part{position:absolute;bottom:-5vh;font-size:3vh;animation:aniv_float linear forwards}
+@keyframes aniv_float{0%{bottom:-5vh;opacity:.9;transform:rotate(0deg)}100%{bottom:110%;opacity:0;transform:rotate(60deg) translateX(2vh)}}
+.pl_aniversario_contenido{position:relative;z-index:2;text-align:center;padding:4vh;max-width:60vh;animation:aniv_in 1s cubic-bezier(.4,0,.2,1)}
+@keyframes aniv_in{from{opacity:0;transform:translateY(4vh)}to{opacity:1;transform:translateY(0)}}
+.pl_aniversario_label{font-size:var(--fz_m3);color:rgba(139,109,0,.7);text-transform:uppercase;letter-spacing:.4vh;font-weight:700;margin-bottom:1vh}
+.pl_aniversario_para{font-size:var(--fz_x3);font-weight:900;color:#8b6d00;text-shadow:0 .2vh .8vh rgba(139,109,0,.2);margin-bottom:1.5vh}
+.pl_aniversario_emoji{font-size:var(--fz_y1);display:block;margin-bottom:2vh;animation:aniv_shake 2s infinite}
+@keyframes aniv_shake{0%,100%{transform:rotate(0deg)}25%{transform:rotate(10deg)}75%{transform:rotate(-10deg)}}
+.pl_aniversario_msg{font-size:var(--fz_m3);color:rgba(139,109,0,.85);line-height:1.7;font-style:italic;margin-bottom:2vh;padding:0 2vh}
+.pl_aniversario_de{font-size:var(--fz_m2);color:rgba(139,109,0,.7)}
+.pl_aniversario_de strong{color:#8b6d00;font-weight:700}

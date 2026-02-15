@@ -1,12 +1,66 @@
-.pl_amor{position:relative;width:100%;height:100dvh;overflow:hidden;background:linear-gradient(135deg,#ff6b8a,#ffb3c1,#fff0f3);display:flex;align-items:center;justify-content:center}
-.pl_fondo{position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.3) 0%,transparent 50%),radial-gradient(circle at 70% 80%,rgba(255,107,138,.3) 0%,transparent 50%)}
-.pl_contenido{position:relative;z-index:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2vh;padding:4vh;opacity:0;transform:translateY(3vh);transition:all .8s cubic-bezier(.4,0,.2,1)}
-.pl_contenido.visible{opacity:1;transform:translateY(0)}
-.pl_lbl{font-size:2vh;color:rgba(255,255,255,.8);letter-spacing:.3vh;text-transform:uppercase;font-weight:500}
-.pl_para{font-size:7vh;font-weight:900;color:#fff;text-shadow:0 3px 20px rgba(0,0,0,.15)}
-.pl_corazon{font-size:8vh;animation:latido 1.5s infinite;filter:drop-shadow(0 3px 15px rgba(255,0,50,.4))}
-@keyframes latido{0%,100%{transform:scale(1)}15%{transform:scale(1.2)}30%{transform:scale(1)}45%{transform:scale(1.15)}60%{transform:scale(1)}}
-.pl_msg{font-size:2.5vh;color:rgba(255,255,255,.9);font-style:italic;line-height:1.7;max-width:60vh}
-.pl_de{font-size:2vh;color:rgba(255,255,255,.75);font-weight:500}
-.pl_de strong{color:#fff;font-weight:800;font-size:2.5vh}
-@media(max-width:768px){.pl_para{font-size:5vh}.pl_corazon{font-size:6vh}.pl_msg{font-size:2vh;max-width:85vw}}
+/* ==================== BASE ==================== */
+.pl_amor{position:relative;width:100%;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#ff6b8a,#ff8fa3,#ffb3c1,#fff0f3);color:#fff;text-align:center;padding:4vh 4vw}
+
+/* ==================== PARTÍCULAS ==================== */
+.pl_amor_particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.pl_amor_particles span{position:absolute;display:block;animation:plAmorFloat linear infinite;opacity:0}
+@keyframes plAmorFloat{0%{transform:translateY(100dvh) scale(0) rotate(0deg);opacity:0}15%{opacity:1}85%{opacity:.8}100%{transform:translateY(-10dvh) scale(1) rotate(720deg);opacity:0}}
+
+/* ==================== CONTENIDO ==================== */
+.pl_amor_content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:2.5vh;max-width:500px;width:100%;animation:plAmorIn .8s ease-out}
+@keyframes plAmorIn{from{opacity:0;transform:translateY(4vh)}to{opacity:1;transform:translateY(0)}}
+
+/* ==================== CORAZÓN PRINCIPAL ==================== */
+.pl_amor_heart{position:relative;animation:plAmorBeat 1.2s ease-in-out infinite}
+.pl_amor_heart_icon{font-size:12vh;filter:drop-shadow(0 0 3vh rgba(255,107,138,.6));color:#fff}
+.pl_amor_heart_ring{position:absolute;inset:-2vh;border:2px solid rgba(255,255,255,.3);border-radius:50%;animation:plAmorRing 2s ease-out infinite}
+@keyframes plAmorBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes plAmorRing{0%{transform:scale(.8);opacity:1}100%{transform:scale(1.6);opacity:0}}
+
+/* ==================== PARA / DE ==================== */
+.pl_amor_para{font-size:1.6vh;text-transform:uppercase;letter-spacing:.6vh;opacity:.85;font-weight:500}
+.pl_amor_nombre{font-size:5.5vh;font-weight:800;line-height:1.1;text-shadow:0 .4vh 1.5vh rgba(0,0,0,.15);word-break:break-word}
+.pl_amor_nombre span{background:linear-gradient(135deg,#fff,#ffd6e0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ==================== MENSAJE ==================== */
+.pl_amor_msg_box{background:rgba(255,255,255,.15);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.25);border-radius:2.5vh;padding:3vh;width:100%;animation:plAmorMsg 1s .3s ease-out both}
+.pl_amor_msg{font-size:2.2vh;line-height:1.7;font-weight:400;word-break:break-word;white-space:pre-line}
+.pl_amor_msg_deco{color:rgba(255,255,255,.4);font-size:3vh;line-height:1}
+@keyframes plAmorMsg{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+
+/* ==================== DE ==================== */
+.pl_amor_de{display:flex;align-items:center;gap:1vh;font-size:1.8vh;opacity:.9;font-weight:500;animation:plAmorIn 1s .5s ease-out both}
+.pl_amor_de strong{color:#fff;font-weight:700}
+.pl_amor_de i{font-size:1.4vh;animation:plAmorBeat 1.2s ease-in-out infinite}
+
+/* ==================== MÚSICA ==================== */
+.pl_amor_musica{display:flex;align-items:center;gap:1.2vh;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:1.2vh 2.5vh;cursor:pointer;transition:all .3s;font-size:1.6vh;font-weight:600;color:#fff;animation:plAmorIn 1s .7s ease-out both;user-select:none}
+.pl_amor_musica:hover{background:rgba(255,255,255,.28);transform:scale(1.05)}
+.pl_amor_musica:active{transform:scale(.97)}
+.pl_amor_musica i{font-size:2vh;width:3vh;text-align:center}
+.pl_amor_musica .pl_bars{display:flex;align-items:flex-end;gap:.3vh;height:2vh}
+.pl_amor_musica .pl_bar{width:.4vh;background:#fff;border-radius:1vh;animation:plBar 1.2s ease-in-out infinite paused}
+.pl_amor_musica.playing .pl_bar{animation-play-state:running}
+.pl_bar:nth-child(1){height:40%;animation-delay:0s}
+.pl_bar:nth-child(2){height:70%;animation-delay:.15s}
+.pl_bar:nth-child(3){height:50%;animation-delay:.3s}
+.pl_bar:nth-child(4){height:80%;animation-delay:.1s}
+@keyframes plBar{0%,100%{height:30%}50%{height:100%}}
+
+/* ==================== AUTOPLAY OVERLAY ==================== */
+.pl_amor_autoplay{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5vh;background:linear-gradient(135deg,#ff6b8a,#ff8fa3,#ffb3c1);cursor:pointer;animation:plAmorIn .5s ease-out}
+.pl_amor_autoplay_icon{font-size:14vh;animation:plAmorBeat 1.2s ease-in-out infinite;filter:drop-shadow(0 0 4vh rgba(255,255,255,.4))}
+.pl_amor_autoplay h2{font-size:3vh;font-weight:700;color:#fff}
+.pl_amor_autoplay p{font-size:1.8vh;color:rgba(255,255,255,.8);font-weight:400}
+.pl_amor_autoplay_btn{display:flex;align-items:center;gap:1vh;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.3);border-radius:50px;padding:1.8vh 4vh;font-size:2vh;font-weight:600;color:#fff;transition:all .3s;animation:plAmorPulse 2s ease-in-out infinite}
+.pl_amor_autoplay_btn:hover{background:rgba(255,255,255,.35);transform:scale(1.05)}
+@keyframes plAmorPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.4)}50%{box-shadow:0 0 0 2vh rgba(255,255,255,0)}}
+
+/* ==================== FOOTER ==================== */
+.pl_amor_foot{position:absolute;bottom:2vh;font-size:1.3vh;opacity:.5;font-weight:400}
+.pl_amor_foot a{color:#fff;text-decoration:none;font-weight:600}
+.pl_amor_foot a:hover{opacity:1}
+
+/* ==================== RESPONSIVE ==================== */
+@media(max-width:480px){.pl_amor_nombre{font-size:4.5vh}.pl_amor_msg{font-size:2vh}.pl_amor_heart_icon{font-size:10vh}}
+@media(min-width:768px){.pl_amor{padding:4vh 8vw}.pl_amor_content{max-width:560px}}

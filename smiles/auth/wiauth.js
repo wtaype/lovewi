@@ -117,6 +117,11 @@ const eventos = () => {
     catch (e) { console.error(e); }
   });
 
+  // Tooltip en focus (solo login)
+  $(document).on('focus.wa', '#email,#password', function () {
+    wiTip(this, $(this).attr('placeholder'));
+  });
+
   // Verificar email
   $(document).on('blur.wa', '#regEmail', async function () {
     const e = $(this).val().trim();

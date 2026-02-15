@@ -17,7 +17,7 @@ export function personal(wi) {
   Mensaje?.('Bienvenido ' + wi.nombre);
   $('.wiauth').html(`
     <div class="sesion"><img src="${wi.imagen || './smile.avif'}" alt="${wi.nombre}"><span>${wi.nombre}</span></div>
-    <button class="wibtn_auth bt_salir"><i class="fas fa-sign-out-alt"></i><span>Salir</span></button>
+    <button class="wibtn_auth bt_salir"><i class="fas fa-sign-out-alt"></i>Salir</button>
   `);
   rutas.navigate('/smile');
 }

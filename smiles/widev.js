@@ -70,22 +70,26 @@ export function removels(...claves) {
     .forEach(clave => localStorage.removeItem(clave));
 }
 
-// TOOLTIP V10.1
-export function wiTip(elm, txt, tipo = 'top', tiempo = 1800) {
-  const tipos = {success:'--success',error:'--error',warning:'--warning',info:'--info'};
-  const color = tipos[tipo] || '--mco';  
-  if (!$('#wiTip-css').length) $('head').append(`<style id="wiTip-css">.wiTip{position:fixed;color:var(--F);z-index:99999;padding:8px 12px;border-radius:4px;font-size:.85rem;max-width:250px;box-shadow:0 2px 8px rgba(0,0,0,.2);opacity:0;transition:opacity .2s}.wiTip.show{opacity:1}</style>`);
-  const $elm = $(elm);
-  if (!$elm.length) return; $('.wiTip').remove();
-  const $tip = $(`<div class="wiTip" style="background:var(${color})"><span>${txt}</span><div style="position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:var(${color})"></div></div>`).appendTo('body');
-  const {left, top, width} = $elm[0].getBoundingClientRect();
-  const tipW = $tip.outerWidth(), tipH = $tip.outerHeight();
-  let x = left + width/2 - tipW/2, y = top - tipH - 8;
-  x = Math.max(8, Math.min(x, innerWidth - tipW - 8));  
-  $tip.css({left: x, top: y});
-  setTimeout(() => {$tip.addClass('show'); if (tiempo > 0) setTimeout(() => $tip.removeClass('show').delay(200).queue(() => $tip.remove()), tiempo);}, 10);
-  return $elm;
+// TOOLTIP V11.0
+export function wiTip(elmOrTxt, txt, tipo = 'top', tiempo = 1800) {
+  if (!wiTip.CSS) {
+    $('head').append('<style id="wiTip-css">.wiTip{position:fixed;color:var(--txa);z-index:99999;padding:.8vh 1.2vh;border-radius:.6vh;font-size:var(--fz_s4);font-weight:500;max-width:25vh;box-shadow:0 .4vh 1.2vh rgba(0,0,0,.2);opacity:0;transform:translateY(-.3vh);transition:all .2s cubic-bezier(.4,0,.2,1);pointer-events:none;backdrop-filter:blur(.4vh)}.wiTip.show{opacity:1;transform:translateY(0)}.wiTip::after{content:"";position:absolute;top:100%;left:50%;margin-left:-.6vh;border:.6vh solid transparent;border-top-color:inherit}</style>');
+    let t; $(document).on('mouseenter.wiTip', '[data-witip]', function () {
+      clearTimeout(t); wiTip.ver(this, $(this).data('witip'), $(this).data('wtipo') || 'top', $(this).data('wtiempo') || 1800);
+    }).on('mouseleave.wiTip', '[data-witip]', () => { $('.wiTip').removeClass('show'); clearTimeout(t); t = setTimeout(() => $('.wiTip').remove(), 200) });
+    wiTip.CSS = true;
+  }
+  if (typeof elmOrTxt === 'string' && !txt) return `data-witip="${elmOrTxt}" data-wtipo="${tipo}" data-wtiempo="${tiempo}"`;
+  return wiTip.ver(elmOrTxt, txt, tipo, tiempo), $(elmOrTxt);
 }
+wiTip.ver = (elm, txt, tipo, tiempo) => {
+  $('.wiTip').remove();
+  const c = ({success:'var(--success)',error:'var(--error)',warning:'var(--warning)',info:'var(--info)'}[tipo] || 'var(--mco)');
+  const $tip = $(`<div class="wiTip" style="background:${c};border-top-color:${c}"><span>${txt}</span></div>`).appendTo('body');
+  const {left, top, width} = $(elm)[0].getBoundingClientRect(), tipW = $tip.outerWidth(), tipH = $tip.outerHeight();
+  $tip.css({left: Math.max(8, Math.min(left + width/2 - tipW/2, innerWidth - tipW - 8)), top: top - tipH - 8});
+  requestAnimationFrame(() => {$tip.addClass('show'); if (tiempo > 0) setTimeout(() => {$tip.removeClass('show'); setTimeout(() => $tip.remove(), 200)}, tiempo)});
+}; // <button ${wiTip('Vista previa')}>👁️</button> || <button ${wiTip('Guardado!', 'success', 3000)}>💾</button> wiTip(this, 'Email ya existe', 'error', 2500); wiTip('#miBtn', 'Copiado!', 'info', 1500);
 
 // SISTEMA IP V10.1
 export const wiIp = (geo) => {
@@ -163,6 +167,7 @@ export const wicopy = (txt, elm = null, msg = '¡Copiado!') => {
 };
 
 // === [START] FUNCIONES GENIALES V10.1 ===
+export const year = () => new Date().getFullYear();
 export const Mayu = (ltr) => ltr.toUpperCase();
 export const Capi = (ltr) => ltr[0].toUpperCase() + ltr.slice(1);
 export const adrm = (a, b) => $(a).addClass(b).siblings().removeClass(b);
