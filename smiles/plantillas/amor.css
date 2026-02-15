@@ -1,0 +1,39 @@
+.amor{width:100%;height:100dvh;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden;font-family:var(--ff_P);background:linear-gradient(135deg,#ff6b8a 0%,#ff8e9e 25%,#ffb3c1 50%,#ffd6e0 75%,#fff0f3 100%)}
+
+/* Canvas corazones */
+.amor canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+
+/* Contenido central */
+.amor_content{position:relative;z-index:2;text-align:center;padding:4vh 6vw;max-width:90vw;animation:amorIn .8s ease}
+@keyframes amorIn{from{opacity:0;transform:translateY(30px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* Para ti */
+.amor_para{font-size:var(--fz_m3);color:rgba(255,255,255,.85);font-weight:500;margin-bottom:1vh;letter-spacing:.3vh}
+.amor_nombre{font-size:var(--fz_x3);font-weight:900;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.2);margin-bottom:2vh;line-height:1.2}
+.amor_corazon{font-size:var(--fz_y1);display:block;margin:1vh auto 2vh;animation:heartPulse 1.5s infinite;filter:drop-shadow(0 4px 15px rgba(255,0,50,.4))}
+@keyframes heartPulse{0%,100%{transform:scale(1)}15%{transform:scale(1.2)}30%{transform:scale(1)}45%{transform:scale(1.15)}60%{transform:scale(1)}}
+
+/* Mensaje */
+.amor_msg{font-size:var(--fz_l1);color:#fff;line-height:1.8;font-style:italic;text-shadow:0 2px 10px rgba(0,0,0,.15);margin-bottom:3vh;max-width:600px;margin-inline:auto}
+
+/* De */
+.amor_de{font-size:var(--fz_m4);color:rgba(255,255,255,.9);font-weight:600}
+.amor_de span{font-size:var(--fz_l1);font-weight:800;color:#fff}
+
+/* Footer mini */
+.amor_footer{position:absolute;bottom:2vh;left:50%;transform:translateX(-50%);z-index:2;display:flex;gap:2vh;align-items:center}
+.amor_footer a{color:rgba(255,255,255,.6);font-size:var(--fz_s3);text-decoration:none;transition:all var(--tr_f)}
+.amor_footer a:hover{color:#fff}
+.amor_btn{width:3.5vh;height:3.5vh;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,.2);color:rgba(255,255,255,.8);font-size:var(--fz_m1);border:none;cursor:pointer;transition:all var(--tr_f);backdrop-filter:blur(5px)}
+.amor_btn:hover{background:rgba(255,255,255,.4);color:#fff;transform:scale(1.1)}
+
+/* Typewriter */
+.typewriter{border-right:2px solid rgba(255,255,255,.7);animation:blink .8s step-end infinite;white-space:normal}
+@keyframes blink{50%{border-color:transparent}}
+
+/* Responsive */
+@media(max-width:768px){
+.amor_nombre{font-size:var(--fz_x2)}
+.amor_msg{font-size:var(--fz_m4)}
+.amor_corazon{font-size:clamp(3rem,10vh,6rem)}
+}

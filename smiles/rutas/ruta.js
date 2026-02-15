@@ -52,8 +52,8 @@ class WiRouter {
 
   updateActiveNav(path) {
     const page = path.replace('/', '') || 'hora';
-    $('.winav_item').removeClass('active');
-    $(`.winav_item[data-page="${page}"]`).addClass('active');
+    $('.nv_item').removeClass('active');
+    $(`.nv_item[data-page="${page}"]`).addClass('active');
   }
 
   async prefetch(path) {
@@ -71,7 +71,7 @@ class WiRouter {
   }
 
   init() {
-    $(document).on('click', '.winav_item', (e) => {
+    $(document).on('click', '.nv_item', (e) => {
       e.preventDefault();
       const page = $(e.currentTarget).data('page');
       this.navigate(page === 'hora' ? '/' : `/${page}`);
