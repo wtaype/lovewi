@@ -16,6 +16,7 @@ export const wiObservar = async (...fns) => {
 export function personal(wi) {
   Mensaje?.('Bienvenido ' + wi.nombre);
   $('.wiauth').html(`
+    <a href="/smile" class="nv_item" data-page="smile"><i class="fa-solid fa-gauge"></i> <span>Dashboard </span></a>
     <div class="sesion"><img src="${wi.imagen || './smile.avif'}" alt="${wi.nombre}"><span>${wi.nombre}</span></div>
     <button class="wibtn_auth bt_salir"><i class="fas fa-sign-out-alt"></i>Salir</button>
   `);
@@ -24,6 +25,7 @@ export function personal(wi) {
 
 function publico() {
   $('.wiauth').html(`
+    <a href="/smile" class="nv_item" data-page="smile"><i class="fa-solid fa-gauge"></i> <span>Descubre </span></a>
     <button class="wibtn_auth registrar"><i class="fas fa-user-plus"></i><span>Registrar</span></button>
     <button class="wibtn_auth login"><i class="fas fa-sign-in-alt"></i><span>Login</span></button>
   `);

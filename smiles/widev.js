@@ -166,6 +166,22 @@ export const wicopy = (txt, elm = null, msg = '¡Copiado!') => {
   }
 };
 
+// ===  ⚡ CARGA INTELIGENTE v14 ===
+export const wiSmart = (() => {
+  const ok = new Set(), c = getls('wiSmart');
+  const run = (o) => {
+    Object.entries(o).forEach(([t, v]) => [].concat(v).forEach(it => {
+      const k = `${t}:${it}`;
+      if (ok.has(k)) return; ok.add(k);
+      t === 'css' ? !$(`link[href="${it}"]`).length && $('<link>', { rel: 'stylesheet', href: it }).appendTo('head')
+        : typeof it === 'function' && it().catch?.(e => console.error('wiSmart:', e));
+    }));
+    savels('wiSmart', 1);
+  };
+  return (o) => c ? run(o) : $(document).one('touchstart scroll click mousemove', () => run(o));
+})();
+
+
 // === [START] FUNCIONES GENIALES V10.1 ===
 export const year = () => new Date().getFullYear();
 export const Mayu = (ltr) => ltr.toUpperCase();

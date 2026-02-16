@@ -39,8 +39,8 @@
 
 /* === LINK === */
 .cr_inp_link{padding:0}
-.cr_pre{padding:1.1vh 0 1.1vh 1.2vh;font-size:var(--fz_s2);color:var(--tx3);font-family:monospace;white-space:nowrap;user-select:none;border-right:1px solid var(--brd)}
-.cr_inp_link input{padding-left:.8vh;font-family:monospace!important;font-weight:600}
+.cr_pre{padding:1.1vh 0 1.1vh 1.2vh;font-size:var(--fz_s2);color:var(--tx3);white-space:nowrap;user-select:none;border-right:1px solid var(--brd)}
+.cr_inp_link input{padding-left:.8vh;font-weight:600}
 .cr_st{padding-right:1vh;font-size:var(--fz_m3);display:flex;align-items:center}
 
 /* === GUARDAR === */
@@ -56,7 +56,7 @@
 .cr_url_row>label{font-size:var(--fz_s4);color:var(--tx1);font-weight:600;font-family:var(--ff_P)!important;white-space:nowrap;display:flex;align-items:center;gap:.4vh}
 .cr_url_row>label i{color:var(--mco)}
 .cr_url_box{display:flex;gap:.5vh;align-items:center;background:var(--bg);border:1.5px solid var(--brd);border-radius:.9vh;padding:.6vh .8vh}
-.cr_url_box input{flex:1;font-size:var(--fz_s3);background:transparent;border:none;padding:.6vh .8vh;color:var(--tx3);font-family:monospace;outline:none}
+.cr_url_box input{flex:1;font-size:var(--fz_s3);background:transparent;border:none;padding:.6vh .8vh;color:var(--tx3);outline:none}
 .cr_url_corta{border-color:var(--mco);background:color-mix(in srgb,var(--mco) 4%,var(--bg))}
 .cr_url_corta input{color:var(--tx);font-weight:600}
 .cr_ubtn{width:2.8vh;height:2.8vh;display:flex;align-items:center;justify-content:center;border-radius:.6vh;background:transparent;color:var(--tx3);font-size:var(--fz_s4);border:1.5px solid var(--brd);cursor:pointer;transition:all .2s;flex-shrink:0}

@@ -61,30 +61,7 @@
   --Paz:#29C72E;
   --Mora:#7000FF;
   --Futuro:#21273B;
-  --bg:#ccefff;
-  --wb:#e5f7ff;
-  --tx:#000;
-  --tx1:#1a1a1a;
-  --tx2:#333;
-  --tx3:#666;
-  --txa:#FFF;
-  --txe:#000;
-  --hv:#00a8e6;
-  --hva:#1873cd;
-  --mco:#1978d7;
-  --mbg:#1978d7;
-  --brd:#b8d9eb;
-  --inp:#f0f9ff;
-  --bg1:#ffffff26;
-  --bg2:#1978d7;
-  --bg3:#e5f7ff;
-  --bg4:rgba(25,120,215,0.1);
-  --bg5:rgba(25,120,215,0.2);
-  --bg6:rgba(204,239,255,0.5);
-  --bg7:#FFF;
-  --bg8:#FFF;
-}
-:root[data-theme="Dulce"]{
+
   --bg:#ffccd1;
   --wb:#ffebed;
   --tx:#000;
@@ -105,6 +82,30 @@
   --bg4:rgba(255,56,73,0.1);
   --bg5:rgba(255,56,73,0.2);
   --bg6:rgba(255,204,209,0.5);
+  --bg7:#FFF;
+  --bg8:#FFF;
+}
+:root[data-theme="Cielo"]{
+  --bg:#ccefff;
+  --wb:#e5f7ff;
+  --tx:#000;
+  --tx1:#1a1a1a;
+  --tx2:#333;
+  --tx3:#666;
+  --txa:#FFF;
+  --txe:#000;
+  --hv:#00a8e6;
+  --hva:#1873cd;
+  --mco:#1978d7;
+  --mbg:#1978d7;
+  --brd:#b8d9eb;
+  --inp:#f0f9ff;
+  --bg1:#ffffff26;
+  --bg2:#1978d7;
+  --bg3:#e5f7ff;
+  --bg4:rgba(25,120,215,0.1);
+  --bg5:rgba(25,120,215,0.2);
+  --bg6:rgba(204,239,255,0.5);
   --bg7:#FFF;
   --bg8:#FFF;
 }
@@ -282,45 +283,38 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
       <a href="/" class="nv_item active" data-page="inicio">
         <i class="fas fa-house"></i> <span>Inicio</span>
       </a>
-
       <a href="/crear" class="nv_item" data-page="crear">
         <i class="fas fa-circle-plus"></i> <span>Crear</span>
       </a>
-
+      <a href="/enviar" class="nv_item" data-page="enviar">
+        <i class="fa-solid fa-qrcode"></i> <span>Enviar QR</span>
+      </a>
       <a href="/plantilla" class="nv_item" data-page="plantilla">
         <i class="fas fa-layer-group"></i> <span>Plantillas</span>
       </a>
-
       <a href="/ejemplos" class="nv_item" data-page="ejemplos">
         <i class="fas fa-wand-magic-sparkles"></i> <span>Ejemplos</span>
       </a>
-
       <a href="/acerca" class="nv_item" data-page="acerca">
         <i class="fas fa-circle-info"></i> <span>Acerca</span>
       </a>
     </nav>
   </div><!-- LADO IZQUIERDO: Logo + Navegación -->
   <div class="nv_right">
-    <a href="/smile" class="nv_item" data-page="smile"><i class="fa-solid fa-gauge"></i> <span>Dashboard </span></a>
     <div class="wiauth"><div class="ski_auth"></div></div>
   </div> 
  <div class="wimenu dpn"><i class="fas fa-bars"></i></div>
 </header>
 <main id="wimain"></main>
 <div id="wiTema">
-  <div class="tema mtha" data-ths="Cielo|#0EBEFF"></div>
-  <div class="tema" data-ths="Dulce|#FF5C69"></div>
+  <div class="tema" data-ths="Cielo|#0EBEFF"></div>
+  <div class="tema mtha" data-ths="Dulce|#FF5C69"></div>
   <div class="tema" data-ths="Paz|#29C72E"></div>
   <div class="tema" data-ths="Mora|#7000FF"></div>
   <div class="tema" data-ths="Futuro|#21273B"></div>
 </div>
 </body>
-<script>(()=>{const d=document,h=d.documentElement,w=d.querySelector('#wiTema');if(!w)return;const ts=[...w.querySelectorAll('.tema')],m=d.querySelector('meta[name="theme-color"]')||d.head.appendChild(Object.assign(d.createElement('meta'),{name:'theme-color'})),st=t=>{const[n,c]=t.dataset.ths.split('|');h.dataset.theme=n;m.content=c;localStorage.wiTema=t.dataset.ths;ts.forEach(x=>x.classList.toggle('mtha',x===t))};w.addEventListener('click',e=>e.target.matches('.tema')&&st(e.target),{passive:!0});const i=w.querySelector(`[data-ths="${localStorage.wiTema}"]`)||ts[2];i&&st(i)})();</script>
-<script type="module">
-  (()=>{const k='wiflash',c=localStorage[k],e=['touchstart','scroll','click','mousemove'];let l=0;const load=()=>{if(l++)return;const h=document.head,css=[
-    'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css'
-  ];css.forEach(u=>h.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:u}))); import('./smiles/main.js'); localStorage[k]=1};
-  c?load():e.forEach(v=>addEventListener(v,load,{passive:!0,once:!0}))})();
-</script>
+<script>(()=>{const d=document,h=d.documentElement,w=d.querySelector('#wiTema');if(!w)return;const ts=[...w.querySelectorAll('.tema')],m=d.querySelector('meta[name="theme-color"]')||d.head.appendChild(Object.assign(d.createElement('meta'),{name:'theme-color'})),st=t=>{const[n,c]=t.dataset.ths.split('|');h.dataset.theme=n;m.content=c;localStorage.wiTema=t.dataset.ths;ts.forEach(x=>x.classList.toggle('mtha',x===t))};w.addEventListener('click',e=>e.target.matches('.tema')&&st(e.target),{passive:!0});const i=w.querySelector(`[data-ths="${localStorage.wiTema}"]`)||ts[1];i&&st(i)})();</script>
+<script type="module" src="./smiles/main.js" defer></script> 
 
 </html>
