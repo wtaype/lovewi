@@ -1,0 +1,85 @@
+/* ==================== BASE ==================== */
+.pl_mujer{position:relative;width:100%;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-x:hidden;overflow-y:auto;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#5B21B6,#7C3AED,#8B5CF6,#A855F7,#C084FC);color:#fff;text-align:center;padding:5vh 4vw 8vh}
+
+/* ==================== PARTICULAS ==================== */
+.pl_mujer_particles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.pl_mujer_particles span{position:absolute;display:block;animation:plMujerFloat linear infinite;opacity:0}
+@keyframes plMujerFloat{0%{transform:translateY(100dvh) scale(0) rotate(0deg);opacity:0}10%{opacity:.9}50%{opacity:.7}100%{transform:translateY(-10dvh) scale(1) rotate(360deg);opacity:0}}
+
+/* ==================== CONTENIDO ==================== */
+.pl_mujer_content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:2.2vh;max-width:520px;width:100%}
+
+/* ==================== BADGE 8M ==================== */
+.pl_mujer_badge{font-size:1.3vh;text-transform:uppercase;letter-spacing:.5vh;opacity:.75;font-weight:600;background:rgba(255,255,255,.12);padding:.7vh 2.5vh;border-radius:50px;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.15);animation:plMujerIn .6s ease-out both}
+
+/* ==================== TITULO ==================== */
+.pl_mujer_title{font-size:3.2vh;font-weight:800;line-height:1.2;text-shadow:0 .3vh 1.5vh rgba(0,0,0,.2);animation:plMujerIn .7s .05s ease-out both}
+
+/* ==================== NOMBRE ==================== */
+.pl_mujer_para{font-size:1.4vh;text-transform:uppercase;letter-spacing:.6vh;opacity:.7;font-weight:500;animation:plMujerIn .8s .1s ease-out both;margin-bottom:-.5vh}
+.pl_mujer_nombre{font-size:5.8vh;font-weight:800;line-height:1.1;word-break:break-word;animation:plMujerIn .8s .15s ease-out both}
+.pl_mujer_nombre span{background:linear-gradient(135deg,#fff,#E9D5FF,#fff);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:plMujerShimmer 3s ease-in-out infinite}
+@keyframes plMujerShimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* ==================== MENSAJE ==================== */
+.pl_mujer_msg_box{background:rgba(255,255,255,.12);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.2);border-radius:2.5vh;padding:3vh;width:100%;animation:plMujerMsg 1s .25s ease-out both}
+.pl_mujer_msg{font-size:2.1vh;line-height:1.75;font-weight:400;word-break:break-word;white-space:pre-line;color:#fff}
+.pl_mujer_msg_deco{color:rgba(255,255,255,.3);font-size:2.8vh;line-height:1}
+@keyframes plMujerMsg{from{opacity:0;transform:scale(.95) translateY(1vh)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+/* ==================== FOTO GRUPAL ==================== */
+.pl_mujer_foto_wrap{animation:plMujerIn 1s .4s ease-out both;padding:.6vh}
+.pl_mujer_foto{width:100%;max-width:46vh;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:2vh;border:3px solid rgba(255,255,255,.35);box-shadow:0 .5vh 3vh rgba(91,33,182,.4),0 0 6vh rgba(139,92,246,.2);transition:transform .4s;display:block}
+.pl_mujer_foto:hover{transform:scale(1.02)}
+
+/* ==================== DE ==================== */
+.pl_mujer_de{display:flex;align-items:center;gap:1vh;font-size:1.7vh;opacity:.85;font-weight:500;animation:plMujerIn 1s .5s ease-out both}
+.pl_mujer_de strong{color:#fff;font-weight:700}
+.pl_mujer_de i{font-size:1.3vh;color:#E9D5FF}
+
+/* ==================== MUSICA ==================== */
+.pl_mujer_musica{display:flex;align-items:center;gap:1.2vh;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);border-radius:50px;padding:1.2vh 2.5vh;cursor:pointer;transition:all .3s;font-size:1.5vh;font-weight:600;color:#fff;animation:plMujerIn 1s .6s ease-out both;user-select:none}
+.pl_mujer_musica:hover{background:rgba(255,255,255,.25);transform:scale(1.05)}
+.pl_mujer_musica:active{transform:scale(.97)}
+.pl_mujer_musica i{font-size:1.8vh;width:2.8vh;text-align:center}
+.pl_mujer_musica .pl_bars{display:flex;align-items:flex-end;gap:.3vh;height:2vh}
+.pl_mujer_musica .pl_bar{width:.4vh;background:#fff;border-radius:1vh;animation:plMujerBar 1.2s ease-in-out infinite paused}
+.pl_mujer_musica.playing .pl_bar{animation-play-state:running}
+.pl_mujer_bar1{height:40%;animation-delay:0s}
+.pl_mujer_bar2{height:70%;animation-delay:.15s}
+.pl_mujer_bar3{height:50%;animation-delay:.3s}
+.pl_mujer_bar4{height:80%;animation-delay:.1s}
+@keyframes plMujerBar{0%,100%{height:30%}50%{height:100%}}
+
+/* ==================== AUTOPLAY OVERLAY ==================== */
+.pl_mujer_autoplay{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5vh;background:linear-gradient(135deg,#5B21B6,#7C3AED,#A855F7);cursor:pointer;animation:plMujerIn .5s ease-out}
+.pl_mujer_autoplay_icon{font-size:13vh;animation:plMujerPulse 2s ease-in-out infinite;filter:drop-shadow(0 0 4vh rgba(255,255,255,.35))}
+.pl_mujer_autoplay h2{font-size:2.8vh;font-weight:700;color:#fff}
+.pl_mujer_autoplay p{font-size:1.7vh;color:rgba(255,255,255,.75);font-weight:400}
+.pl_mujer_autoplay_btn{display:flex;align-items:center;gap:1vh;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);border-radius:50px;padding:1.8vh 4vh;font-size:1.9vh;font-weight:600;color:#fff;transition:all .3s;animation:plMujerBtnPulse 2s ease-in-out infinite}
+.pl_mujer_autoplay_btn:hover{background:rgba(255,255,255,.3);transform:scale(1.05)}
+@keyframes plMujerPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes plMujerBtnPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.35)}50%{box-shadow:0 0 0 2vh rgba(255,255,255,0)}}
+
+/* ==================== FOOTER ==================== */
+.pl_mujer_foot{position:relative;margin-top:3vh;font-size:1.2vh;opacity:.45;font-weight:400;z-index:2}
+.pl_mujer_foot a{color:#fff;text-decoration:none;font-weight:600}
+.pl_mujer_foot a:hover{opacity:1}
+
+/* ==================== ANIMACION GENERAL ==================== */
+@keyframes plMujerIn{from{opacity:0;transform:translateY(3vh)}to{opacity:1;transform:translateY(0)}}
+
+/* ==================== RESPONSIVE ==================== */
+@media(max-width:480px){
+  .pl_mujer{padding:4vh 3vw 8vh}
+  .pl_mujer_title{font-size:2.8vh}
+  .pl_mujer_nombre{font-size:4.5vh}
+  .pl_mujer_msg{font-size:1.9vh}
+  .pl_mujer_foto{max-width:90vw}
+}
+@media(min-width:768px){
+  .pl_mujer{padding:5vh 8vw 8vh}
+  .pl_mujer_content{max-width:580px}
+  .pl_mujer_foto{max-width:52vh}
+  .pl_mujer_title{font-size:3.8vh}
+}

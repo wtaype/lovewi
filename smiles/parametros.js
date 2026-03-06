@@ -7,7 +7,12 @@ const M = {
   Aniversario: { c:'aniversario', i:'fa-calendar-heart',     k:'Celebración', x:'#ffd700', e:'🥂', b:'linear-gradient(135deg,#ffd700,#ffed4e,#fff9db)',  d:'Celebra meses o años juntos con una dedicatoria inolvidable',           ej:'Un año más a tu lado, mil sonrisas compartidas 🥂',                                        mu:'https://raw.githubusercontent.com/geluksee/nice/main/FloresAmarillas.mp3' },
   Carta:       { c:'carta',       i:'fa-envelope-open-text', k:'Romántico',   x:'#d4a574', e:'✉️', b:'linear-gradient(135deg,#d4a574,#e8c9a0,#faf0e6)',  d:'Una carta de amor digital elegante y nostálgica',                       ej:'Querido amor, escribo estas líneas para recordarte lo mucho que significas ✉️',             mu:null },
   Declaracion: { c:'declaracion', i:'fa-hand-holding-heart', k:'Romántico',   x:'#e74c3c', e:'❤️', b:'linear-gradient(135deg,#e74c3c,#ff8a80,#fce4e4)',  d:'Declara tu amor con un mensaje valiente y emotivo',                     ej:'No sabía que el amor verdadero existía hasta que te conocí ❤️',                             mu:'https://raw.githubusercontent.com/geluksee/nice/main/FloresAmarillas.mp3' },
-  Saludo:      { c:'saludo',      i:'fa-sun',                k:'Amistad',     x:'#ff9a3c', e:'🌅', b:'linear-gradient(135deg,#ff9a3c,#ffcc02,#fff8e1)',  d:'Buenos días, buenas noches o saludos especiales',                       ej:'Buenos días sol, que tu día esté lleno de sonrisas y bendiciones 🌅',                       mu:null }
+  Saludo:      { c:'saludo',      i:'fa-sun',                k:'Amistad',     x:'#ff9a3c', e:'🌅', b:'linear-gradient(135deg,#ff9a3c,#ffcc02,#fff8e1)',  d:'Buenos días, buenas noches o saludos especiales',                       ej:'Buenos días sol, que tu día esté lleno de sonrisas y bendiciones 🌅',                       mu:null },
+  Mujer: { c:'mujer', i:'fa-venus', k:'Celebración', x:'#8B5CF6', e:'💜', b:'linear-gradient(135deg,#8B5CF6,#C084FC,#F3E8FF)', 
+    d:'Celebra el Día de la Mujer con un mensaje especial y personalizado', ej:'Tu fuerza, tu luz y tu valentía inspiran al mundo entero 💜',  
+    mu:'https://raw.githubusercontent.com/geluksee/nice/main/FloresAmarillas.mp3',
+    img: 'https://i.postimg.cc/0PfGKG79/image.png '
+   },
 };
 
 // ==================== EXPORTS AUTOMÁTICOS ====================
@@ -38,7 +43,7 @@ export const miurl = () => {
   const n = keys[0];
   if (M[n]) {
     const dec = (k) => decodeURIComponent((p.get(k) || '').replace(/\+/g, ' '));
-    parametro = { plantilla: M[n].c, nombre: n, tipo: 'directo', de: dec('de'), para: dec('para'), msg: dec('msg'), musica: p.get('musica') ? decodeURIComponent(p.get('musica')) : (M[n].mu || ''), emoji: M[n].e };
+    parametro = { plantilla: M[n].c, nombre: n, tipo: 'directo', de: dec('de'), para: dec('para'), msg: dec('msg'), musica: p.get('musica') ? decodeURIComponent(p.get('musica')) : (M[n].mu || ''), emoji: M[n].e, img: M[n].img ? M[n].img.trim() : '' };
     return true;
   }
 
