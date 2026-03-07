@@ -17,4 +17,10 @@ function footer(){
 $("head").append(`<style>:root{--bgim:url("${import.meta.env.BASE_URL}wpuntos.svg")}body{background: var(--bgim), var(--bg)}</style>`)
 $('.wimenu').on('click', function(){$('.wiheader').toggleClass('movil'); $(this).find('i').toggleClass('fa-bars fa-times')});
 
+const heroImg = () => {
+  const $h = $('.hero_imagen');
+  if ($h.length) $h.append(`<img src="${import.meta.env.BASE_URL}amor.webp" alt="Lovewi - Mensajes de Amor">`);
+  else requestAnimationFrame(heroImg);
+};
+heroImg();
 console.log(`✅ ${app} : ${version}`)

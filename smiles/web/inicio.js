@@ -38,7 +38,7 @@ export const render = () => `
         </div>
       </div>
       <div class="hero_imagen">
-        <img src="${import.meta.env.BASE_URL}amor.webp" alt="Lovewi - Mensajes de Amor" loading="lazy">
+        
         <div class="hero_decoracion">
           <i class="fas fa-heart"></i>
           <i class="fas fa-heart"></i>

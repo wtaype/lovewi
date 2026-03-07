@@ -1,5 +1,5 @@
 import { db, auth } from './firebase.js';
-import { doc, getDoc, setDoc, deleteDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, deleteDoc, updateDoc, serverTimestamp, increment } from 'firebase/firestore';
 import { getls } from '../widev.js';
 
 const COL = 'wiLoves';
@@ -50,12 +50,13 @@ export const guardar = async (id, data) => {
     // ✅ Guardar con TODOS los campos necesarios
     await setDoc(ref(id), {
       ...data,                          // plantilla, nombre, de, para, msg, musica, emoji
-      uid: userData.uid,                // ← NUEVO
-      email: userData.email,            // ← NUEVO
-      usuario: userData.usuario,        // ← NUEVO
-      creado: serverTimestamp(),        // ← NUEVO
-      actualizado: serverTimestamp(),   // ← NUEVO
-      fecha: serverTimestamp()          // Mantener para compatibilidad
+      uid: userData.uid,
+      email: userData.email,
+      usuario: userData.usuario,
+      vistas: 0,
+      creado: serverTimestamp(),
+      actualizado: serverTimestamp(),
+      fecha: serverTimestamp()
     });
     
     console.log(`✅ Guardado en wiLoves: ${id} - ${userData.email}`);
@@ -77,7 +78,12 @@ export const eliminar = async (id) => {
   }
 };
 
-// 🔄 Actualizar con actualizado timestamp
+// �️ Registrar vista (fire-and-forget)
+export const registrarVista = (id) => {
+  updateDoc(ref(id), { vistas: increment(1) }).catch(() => {});
+};
+
+// �🔄 Actualizar con actualizado timestamp
 export const actualizar = async (id, data) => {
   try { 
     await updateDoc(ref(id), {

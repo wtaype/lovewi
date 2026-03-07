@@ -117,11 +117,17 @@ export const resolver = async () => {
   ocultar();
   try {
     if (parametro.tipo === 'directo') return await renderizar(parametro);
-    const { buscar } = parametro.tipo === 'publico'
-      ? await import('./smile/publico.js')
-      : await import('./smile/wiloves.js');
-    const data = await buscar(parametro.id);
-    data ? await renderizar(normalizar(data)) : $('#wimain').html(noexiste());
+
+    if (parametro.tipo === 'wiloves') {
+      const wl = await import('./smile/wiloves.js');
+      const data = await wl.buscar(parametro.id);
+      if (data) { await renderizar(normalizar(data)); wl.registrarVista(parametro.id); }
+      else $('#wimain').html(noexiste());
+    } else {
+      const { buscar } = await import('./smile/publico.js');
+      const data = await buscar(parametro.id);
+      data ? await renderizar(normalizar(data)) : $('#wimain').html(noexiste());
+    }
   } catch (e) { console.error('Error:', e); $('#wimain').html(noexiste()); }
 };
 

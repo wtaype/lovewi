@@ -1,22 +1,24 @@
 import $ from 'jquery';
-import { rutas } from './rutas/ruta.js';
-import { getls, wiSmart } from './widev.js';
+import { wiSmart } from './widev.js';
 import { miurl, resolver } from './parametros.js';
 
-if (miurl()) resolver();
-else {
+if (miurl()) {
+  wiSmart({ css: [
+    'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css',
+  ]});
+  resolver();
+} else {
+  const [, { rutas }] = await Promise.all([import('./header.js'), import('./rutas/ruta.js')]);
   ['inicio','crear','enviar','plantilla','ejemplos','acerca'].forEach(pg => rutas.register(`/${pg}`, () => import(`./web/${pg}.js`)));
   ['agregar','smile'].forEach(pg => rutas.register(`/${pg}`, () => import(`./smile/${pg}.js`)));
-  // rutas.register('/smile', () => getls('wiSmile') ? import('./smile/smile.js') : import('./smile/descubre.js'));
-  import('./header.js'); 
   rutas.init();
+  wiSmart({
+    css: [
+      'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap',
+      'https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&display=swap',
+      'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css',
+    ],
+    js: [() => import('./footer.js')]
+  });
 }
-
-wiSmart({
-  css: [
-    'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap',
-    'https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&display=swap',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css',
-  ],
-  js: [() => import('./footer.js')]
-});
