@@ -3,15 +3,6 @@
 .cr_izq{display:flex;flex-direction:column;gap:2vh}
 .cr_der{display:flex;flex-direction:column;gap:2vh;position:sticky;top:6vh;height:fit-content}
 
-/* === CABECERA === */
-.cr_cab{display:flex;justify-content:space-between;align-items:center;padding:2vh 2.5vh;background:var(--wb);border-radius:1.2vh;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.cr_cab h2{font-size:var(--fz_l1);font-weight:800;color:var(--tx);display:flex;align-items:center;gap:.8vh}
-.cr_cab h2 i{color:var(--mco);font-size:var(--fz_l2)}
-.cr_accs{display:flex;gap:.6vh}
-.cr_acc{width:3.2vh;height:3.2vh;display:flex;align-items:center;justify-content:center;background:var(--bg);border:1.5px solid var(--brd);border-radius:.8vh;color:var(--tx3);font-size:var(--fz_m1);cursor:pointer;transition:all .2s}
-.cr_acc:hover{background:var(--mco);color:var(--txa);border-color:var(--mco);transform:translateY(-1px)}
-.cr_acc.borrar:hover{background:var(--error);border-color:var(--error)}
-
 /* === SECCIONES === */
 .cr_sec{background:var(--wb);border-radius:1.2vh;padding:2.2vh 2.5vh;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .cr_stit{font-size:var(--fz_m3);font-weight:700;color:var(--tx);display:flex;align-items:center;gap:.6vh;margin-bottom:1.8vh}
@@ -36,6 +27,16 @@
 .cr_select select:hover{border-color:var(--mco)}
 .cr_select select:focus{outline:none;border-color:var(--mco);box-shadow:0 0 0 2px color-mix(in srgb,var(--mco) 10%,transparent)}
 .cr_select i{position:absolute;right:1.2vh;top:50%;transform:translateY(-50%);color:var(--tx3);pointer-events:none;font-size:var(--fz_s4)}
+
+/* === CHIPS (Music selector) === */
+.cr_chips{display:flex;flex-wrap:wrap;gap:.5vh;margin-bottom:.6vh}
+.cr_chip{cursor:pointer;user-select:none}
+.cr_chip input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.cr_chip span{display:flex;align-items:center;gap:.4vh;padding:.6vh 1.2vh;background:var(--bg);border:1.5px solid var(--brd);border-radius:50px;font-size:var(--fz_s2);font-weight:500;color:var(--tx3);transition:all .25s;white-space:nowrap}
+.cr_chip span i{font-size:var(--fz_s1);opacity:.5}
+.cr_chip:hover span{border-color:var(--chip);color:var(--chip)}
+.cr_chip input:checked+span{background:var(--chip);color:#fff;border-color:var(--chip);box-shadow:0 2px 6px color-mix(in srgb,var(--chip) 30%,transparent)}
+.cr_chip input:checked+span i{opacity:1}
 
 /* === LINK === */
 .cr_inp_link{padding:0}
@@ -103,10 +104,8 @@
   .cr_row{grid-template-columns:1fr}
   .cr_url_row{grid-template-columns:1fr;gap:.8vh}
   .cr_marco{height:52vh}
-  .cr_accs{gap:.5vh}
 }
 @media(max-width:480px){
-  .cr_cab h2{font-size:var(--fz_m4)}
   .cr_sec{padding:1.8vh 2vh}
   .cr_marco{height:48vh}
   .pv_nom{font-size:var(--fz_l2)}

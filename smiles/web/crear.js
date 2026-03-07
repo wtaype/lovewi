@@ -6,20 +6,26 @@ import { genURL, genPublica, genPrivada, plantillas, pls, bg } from '../parametr
 const esAuth = () => !!getls('wiSmile');
 const cache = new Map();
 
+const renderChips = (pl) => {
+  const m = plantillas[pl]?.musicas || [];
+  if (!m.length) return '';
+  return `<div class="cr_chips">
+    ${m.map(s => `<label class="cr_chip" style="--chip:${plantillas[pl].x}"><input type="radio" name="crMusChip" value="${s.u}"><span><i class="fas fa-music"></i> ${s.n}</span></label>`).join('')}
+  </div>`;
+};
+
+const renderMisChips = (items, name, icon) => {
+  if (!items.length) return '';
+  return `<div class="cr_chips cr_mis">
+    ${items.map(s => `<label class="cr_chip" style="--chip:var(--mco)"><input type="radio" name="${name}" value="${s.src}"><span><i class="fas fa-${icon}"></i> ${s.titulo}</span></label>`).join('')}
+  </div>`;
+};
+
 export const render = () => `
 <div class="crear">
   <div class="cr_izq">
-    <div class="cr_cab">
-      <h2><i class="fas fa-wand-magic-sparkles"></i> Crea tu Mensaje</h2>
-      <div class="cr_accs">
-        <button class="cr_acc" id="accVer" ${wiTip('Vista previa')}><i class="fas fa-eye"></i></button>
-        <button class="cr_acc" id="accCopiar" ${wiTip('Copiar enlace')}><i class="fas fa-copy"></i></button>
-        <button class="cr_acc borrar" id="accLimpiar" ${wiTip('Limpiar todo')}><i class="fas fa-rotate-left"></i></button>
-      </div>
-    </div>
-
     <div class="cr_sec">
-      <h3 class="cr_stit"><i class="fas fa-pen-fancy"></i> Personaliza</h3>
+      <h3 class="cr_stit"><i class="fas fa-pen-fancy"></i> Personaliza tu mensaje</h3>
       <div class="cr_form">
         <div class="cr_row">
           <div class="cr_campo">
@@ -35,19 +41,20 @@ export const render = () => `
           <label>Mensaje <small id="cCont">0/200</small></label>
           <textarea id="cMsg" maxlength="200" rows="3" placeholder="Algo desde el corazón..."></textarea>
         </div>
-        <div class="cr_campo">
-          <label>Música <small>URL opcional</small></label>
-          <div class="cr_inp"><i class="fas fa-music"></i><input id="cMusica" maxlength="200" placeholder="https://ejemplo.com/musica.mp3"></div>
-        </div>
         <div class="cr_row">
           <div class="cr_campo">
-            <label>Link <small>Mín. 3 caracteres</small></label>
-            <div class="cr_inp cr_inp_link">
-              <span class="cr_pre">${location.origin}/${esAuth() ? '?' : '?ver='}</span>
-              <input id="cLink" maxlength="30" placeholder="auto" spellcheck="false">
-              <span class="cr_st" id="linkStatus"></span>
-            </div>
+            <label>Música <small>URL opcional</small></label>
+            <div id="crChipsWrap">${renderChips('Amor')}</div>
+            <div id="crMisAudios"></div>
+            <div class="cr_inp"><i class="fas fa-music"></i><input id="cMusica" maxlength="200" placeholder="URL de música..."></div>
           </div>
+          <div class="cr_campo">
+            <label>Imagen <small>URL opcional</small></label>
+            <div id="crMisImgs"></div>
+            <div class="cr_inp"><i class="fas fa-image"></i><input id="cImg" maxlength="300" placeholder="URL de imagen..."></div>
+          </div>
+        </div>
+        <div class="cr_row">
           <div class="cr_campo">
             <label>Plantilla</label>
             <div class="cr_select">
@@ -55,6 +62,14 @@ export const render = () => `
                 ${Object.keys(plantillas).map((k, i) => `<option value="${k}"${!i ? ' selected' : ''}>${plantillas[k].e} ${k}</option>`).join('')}
               </select>
               <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="cr_campo">
+            <label>Link <small>Mín. 3 caracteres</small></label>
+            <div class="cr_inp cr_inp_link">
+              <span class="cr_pre">${location.origin}/${esAuth() ? '?' : '?ver='}</span>
+              <input id="cLink" maxlength="30" placeholder="auto" spellcheck="false">
+              <span class="cr_st" id="linkStatus"></span>
             </div>
           </div>
         </div>
@@ -65,7 +80,6 @@ export const render = () => `
       <button class="cr_gbtn ${esAuth() ? '' : 'cr_gbtn_pub'}" id="guardarNube">
         <i class="fas fa-cloud-arrow-up"></i> ${esAuth() ? 'Guardar en nube' : 'Generar enlace'}
       </button>
-      
       <div class="cr_url_row">
         <label>Corto</label>
         <div class="cr_url_box cr_url_corta">
@@ -74,7 +88,6 @@ export const render = () => `
           <button class="cr_ubtn" id="abrCorta" ${wiTip('Abrir')}><i class="fas fa-arrow-up-right-from-square"></i></button>
         </div>
       </div>
-      
       <div class="cr_url_row">
         <label>Completo</label>
         <div class="cr_url_box">
@@ -83,7 +96,6 @@ export const render = () => `
           <button class="cr_ubtn" id="abrLarga" ${wiTip('Abrir')}><i class="fas fa-arrow-up-right-from-square"></i></button>
         </div>
       </div>
-      
       ${esAuth() ? '' : '<p class="cr_nota"><i class="fas fa-triangle-exclamation"></i> Sin cuenta expiran en 30 días. <a href="/smile">Crear cuenta →</a></p>'}
     </div>
   </div>
@@ -123,13 +135,39 @@ export const render = () => `
 export const init = () => {
   let pl = 'Amor', linkTimer = null, autoTimer = null, autoInProgress = false;
   const auth = esAuth();
-  
+
+  // Cargar audios/imágenes del usuario
+  if (auth) {
+    import('../smile/agregar.js').then(async (mod) => {
+      try {
+        const [audios, imgs] = await Promise.all([mod.misAudios(), mod.misImagenes()]);
+        $('#crMisAudios').html(renderMisChips(audios, 'crMisAud', 'headphones'));
+        $('#crMisImgs').html(renderMisChips(imgs, 'crMisImg', 'image'));
+      } catch (e) { console.error('Error cargando recursos:', e); }
+    });
+  }
+
+  const getMusica = () => {
+    const chip = $('input[name="crMusChip"]:checked');
+    if (chip.length) return chip.val();
+    const mis = $('input[name="crMisAud"]:checked');
+    if (mis.length) return mis.val();
+    return $('#cMusica').val().trim();
+  };
+
+  const getImg = () => {
+    const mis = $('input[name="crMisImg"]:checked');
+    if (mis.length) return mis.val();
+    return $('#cImg').val().trim();
+  };
+
   const vals = () => ({
     link: $('#cLink').val().trim().replace(/[^a-záéíóúñA-Z0-9]/gi, ''),
     de: $('#cDe').val().trim() || 'Amigo',
     para: $('#cPara').val().trim(),
     msg: $('#cMsg').val().trim(),
-    musica: $('#cMusica').val().trim()
+    musica: getMusica(),
+    img: getImg()
   });
 
   const validarLink = async (id) => {
@@ -146,7 +184,7 @@ export const init = () => {
       cache.set(id, exists);
       $('#linkStatus').html(exists ? '<i class="fas fa-circle-xmark" style="color:var(--error)"></i>' : '<i class="fas fa-circle-check" style="color:var(--success)"></i>');
       return !exists;
-    } catch { 
+    } catch {
       $('#linkStatus').html('<i class="fas fa-triangle-exclamation" style="color:var(--warning)"></i>');
       return false;
     }
@@ -169,23 +207,16 @@ export const init = () => {
     autoInProgress = false;
   };
 
-  const actURL = () => {
-    const { de, para, msg, musica } = vals();
-    const url = para ? genURL(pl, de, para, msg, musica) : '';
-    $('#urlLarga').val(url);
-    return url;
-  };
-
   const actVista = () => {
-    const { de, para, msg } = vals();
+    const v = vals();
     const m = plantillas[pl] || plantillas.Amor;
-    $('#pvDe').text(de);
-    $('#pvPara').text(para || '___');
-    $('#pvMsg').text(msg || 'Tu mensaje aquí...');
-    $('#cCont').text(`${msg.length}/200`);
+    $('#pvDe').text(v.de);
+    $('#pvPara').text(v.para || '___');
+    $('#pvMsg').text(v.msg || 'Tu mensaje aquí...');
+    $('#cCont').text(`${v.msg.length}/200`);
     $('#miniVista').css('background', m.b);
     $('#pvCor, .pv_cor').text(m.e);
-    actURL();
+    $('#urlLarga').val(v.para ? genURL(pl, v.de, v.para, v.msg, v.musica, v.img) : '');
   };
 
   const actShare = (url) => {
@@ -194,16 +225,50 @@ export const init = () => {
     $('#compTG').attr('href', `https://t.me/share/url?url=${encodeURIComponent(url)}&text=💌`);
   };
 
-  const limpiar = () => {
-    $('#cDe, #cPara, #cMsg, #cLink, #cMusica, #urlCorta, #urlLarga').val('');
-    $('#linkStatus').html('');
-    cache.clear();
-    actVista();
-  };
-
   const mejor = () => $('#urlCorta').val() || $('#urlLarga').val();
 
   // ✅ EVENTOS
+  $(document).on('change.cr', '#selPlantilla', function () {
+    pl = $(this).val();
+    $('#crChipsWrap').html(renderChips(pl));
+    $('input[name="crMusChip"]').prop('checked', false);
+    $('#cMusica').val('');
+    actVista();
+  });
+
+  // Music chips (predefinidos)
+  $(document).on('change.cr', 'input[name="crMusChip"]', function () {
+    $('#cMusica').val('');
+    $('input[name="crMisAud"]').prop('checked', false);
+    actVista();
+  });
+
+  // Mis audios (guardados)
+  $(document).on('change.cr', 'input[name="crMisAud"]', function () {
+    $('#cMusica').val('');
+    $('input[name="crMusChip"]').prop('checked', false);
+    actVista();
+  });
+
+  // Mis imágenes (guardadas)
+  $(document).on('change.cr', 'input[name="crMisImg"]', function () {
+    $('#cImg').val('');
+    actVista();
+  });
+
+  $(document).on('input.cr', '#cMusica', function () {
+    if ($(this).val().trim()) {
+      $('input[name="crMusChip"]').prop('checked', false);
+      $('input[name="crMisAud"]').prop('checked', false);
+    }
+    actVista();
+  });
+
+  $(document).on('input.cr', '#cImg', function () {
+    if ($(this).val().trim()) $('input[name="crMisImg"]').prop('checked', false);
+    actVista();
+  });
+
   $(document).on('input.cr', '#cLink', function () {
     const v = $(this).val().replace(/[^a-záéíóúñA-Z0-9]/gi, '');
     $(this).val(v);
@@ -211,24 +276,13 @@ export const init = () => {
     linkTimer = setTimeout(() => validarLink(v), 600);
   });
 
-  $(document).on('change.cr', '#selPlantilla', function () { pl = $(this).val(); actVista(); });
   $(document).on('input.cr', '#cPara', function () { actVista(); clearTimeout(autoTimer); autoTimer = setTimeout(() => generarLinkAuto(), 1000); });
-  $(document).on('input.cr', '#cDe, #cMsg, #cMusica', actVista);
+  $(document).on('input.cr', '#cDe, #cMsg', actVista);
 
   $(document).on('click.cr', '.cr_disp', function () {
     $('.cr_disp').removeClass('active');
     $(this).addClass('active');
     $('#marco').toggleClass('escritorio', $(this).data('disp') === 'escritorio');
-  });
-
-  $(document).on('click.cr', '#accVer', () => {
-    const url = mejor() || actURL();
-    url ? window.open(url, '_blank') : Notificacion('Completa los campos 💕', 'warning');
-  });
-
-  $(document).on('click.cr', '#accCopiar', function () {
-    const url = mejor() || actURL();
-    url ? (wicopy(url, this, '¡Copiado!'), actShare(url)) : Notificacion('Completa los campos 💕', 'warning');
   });
 
   $(document).on('click.cr', '#copLarga, #abrLarga', function (e) {
@@ -237,43 +291,41 @@ export const init = () => {
     e.currentTarget.id === 'copLarga' ? wicopy(url, this, '¡Copiado!') : window.open(url, '_blank');
   });
 
-  // ✅ GUARDAR - CORREGIDO: separar id y data, solo strings en Firebase
   $(document).on('click.cr', '#guardarNube', async function () {
     const v = vals();
     if (!v.para) return Notificacion('Completa el nombre 💕', 'warning');
-    
+
     if (!v.link) {
       await generarLinkAuto();
       v.link = $('#cLink').val().trim();
       if (!v.link) return Notificacion('No se pudo generar link', 'error');
     }
-    
+
     if ($('#linkStatus').find('.fa-circle-xmark').length) {
       return Notificacion('Link ocupado, generando otro...', 'warning'), setTimeout(() => { $('#cLink').val(''); generarLinkAuto(); }, 500);
     }
-    
+
     wiSpin(this, true);
     try {
       const mod = auth ? await import('../smile/wiloves.js') : await import('../smile/publico.js');
-
-      // ✅ Solo strings planos para Firebase - NUNCA objetos con funciones
       const id = await mod.guardar(v.link, {
-        plantilla: pls[pl],       // 'amor' (string)
-        nombre: pl,               // 'Amor' (string)
+        plantilla: pls[pl],
+        nombre: pl,
         de: v.de,
         para: v.para,
         msg: v.msg,
         musica: v.musica,
-        emoji: plantillas[pl].e   // '💕' (string)
+        img: v.img,
+        emoji: plantillas[pl].e
       });
-      
+
       if (!id) throw new Error('Link ocupado');
-      
+
       cache.set(id, true);
       const url = auth ? genPrivada(id) : genPublica(id);
       $('#urlCorta').val(url);
       actShare(url);
-      
+
       wicopy(url, this, '¡Copiado! ☁️');
       Notificacion('¡Enlace generado! 💌', 'success');
     } catch (e) {
@@ -287,8 +339,6 @@ export const init = () => {
     if (!url) return Notificacion('Genera el enlace primero', 'warning');
     e.currentTarget.id === 'copCorta' ? wicopy(url, this, '¡Copiado!') : window.open(url, '_blank');
   });
-
-  $(document).on('click.cr', '#accLimpiar', () => { limpiar(); Notificacion('Limpiado ✨', 'info'); });
 
   $(document).on('click.cr', '#compNat', (e) => {
     e.preventDefault();

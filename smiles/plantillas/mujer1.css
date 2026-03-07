@@ -1,0 +1,66 @@
+/* ==================== BASE ==================== */
+.pl_m1{position:relative;width:100%;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-x:hidden;overflow-y:auto;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#ff3849,#ff7a85,#ffccd1);color:#fff;text-align:center;padding:5vh 4vw 8vh}
+
+/* ==================== PARTICULAS ==================== */
+.pl_m1_particles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.pl_m1_particles span{position:absolute;display:block;animation:plM1Float linear infinite;opacity:0}
+@keyframes plM1Float{0%{transform:translateY(100dvh) scale(0) rotate(0deg);opacity:0}10%{opacity:.9}50%{opacity:.7}100%{transform:translateY(-10dvh) scale(1) rotate(360deg);opacity:0}}
+
+/* ==================== CONTENIDO ==================== */
+.pl_m1_content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:2.2vh;max-width:520px;width:100%}
+
+/* ==================== TITULO ==================== */
+.pl_m1_title{font-size:3.2vh;font-weight:800;line-height:1.2;text-shadow:0 .3vh 1.5vh rgba(0,0,0,.15);animation:plM1In .7s .05s ease-out both}
+
+/* ==================== NOMBRE ==================== */
+.pl_m1_nombre{font-size:5.8vh;font-weight:800;line-height:1.1;word-break:break-word;animation:plM1In .8s .15s ease-out both}
+.pl_m1_nombre span{background:linear-gradient(135deg,#fff,#ffe0e3,#fff);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:plM1Shimmer 3s ease-in-out infinite}
+@keyframes plM1Shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* ==================== MENSAJE ==================== */
+.pl_m1_msg_box{background:rgba(255,255,255,.15);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.25);border-radius:2.5vh;padding:3vh;width:100%;animation:plM1Msg 1s .25s ease-out both}
+.pl_m1_msg{font-size:2.1vh;line-height:1.75;font-weight:400;word-break:break-word;white-space:pre-line;color:#fff}
+.pl_m1_msg_deco{color:rgba(255,255,255,.35);font-size:2.8vh;line-height:1}
+@keyframes plM1Msg{from{opacity:0;transform:scale(.95) translateY(1vh)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+/* ==================== FOTO GRUPAL ==================== */
+.pl_m1_foto_wrap{animation:plM1In 1s .4s ease-out both;padding:.6vh}
+.pl_m1_foto{width:100%;max-width:46vh;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:2vh;border:3px solid rgba(255,255,255,.4);box-shadow:0 .5vh 3vh rgba(255,56,73,.35),0 0 6vh rgba(255,122,133,.2);transition:transform .4s;display:block}
+.pl_m1_foto:hover{transform:scale(1.02)}
+
+/* ==================== DE ==================== */
+.pl_m1_de{display:flex;align-items:center;gap:1vh;font-size:1.7vh;opacity:.85;font-weight:500;animation:plM1In 1s .5s ease-out both}
+.pl_m1_de strong{color:#fff;font-weight:700}
+.pl_m1_de i{font-size:1.3vh;color:#ffe0e3}
+
+/* ==================== MUSICA ==================== */
+.pl_m1_musica{display:flex;align-items:center;gap:1.2vh;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.22);border-radius:50px;padding:1.2vh 2.5vh;cursor:pointer;transition:all .3s;font-size:1.5vh;font-weight:600;color:#fff;animation:plM1In 1s .6s ease-out both;user-select:none}
+.pl_m1_musica:hover{background:rgba(255,255,255,.3);transform:scale(1.05)}
+.pl_m1_musica:active{transform:scale(.97)}
+.pl_m1_musica i{font-size:1.8vh;width:2.8vh;text-align:center}
+.pl_m1_musica .pl_bars{display:flex;align-items:flex-end;gap:.3vh;height:2vh}
+.pl_m1_musica .pl_bar{width:.4vh;background:#fff;border-radius:1vh;animation:plM1Bar 1.2s ease-in-out infinite paused}
+.pl_m1_musica.playing .pl_bar{animation-play-state:running}
+.pl_m1_bar1{height:40%;animation-delay:0s}
+.pl_m1_bar2{height:70%;animation-delay:.15s}
+.pl_m1_bar3{height:50%;animation-delay:.3s}
+.pl_m1_bar4{height:80%;animation-delay:.1s}
+@keyframes plM1Bar{0%,100%{height:30%}50%{height:100%}}
+
+/* ==================== AUTOPLAY OVERLAY ==================== */
+.pl_m1_autoplay{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5vh;background:linear-gradient(135deg,#ff3849,#ff7a85,#ffccd1);cursor:pointer;animation:plM1In .5s ease-out}
+.pl_m1_autoplay_icon{font-size:13vh;animation:plM1Pulse 2s ease-in-out infinite;filter:drop-shadow(0 0 4vh rgba(255,255,255,.35))}
+.pl_m1_autoplay h2{font-size:2.8vh;font-weight:700;color:#fff}
+.pl_m1_autoplay p{font-size:1.7vh;color:rgba(255,255,255,.75);font-weight:400}
+.pl_m1_autoplay_btn{display:flex;align-items:center;gap:1vh;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.3);border-radius:50px;padding:1.8vh 4vh;font-size:1.9vh;font-weight:600;color:#fff;transition:all .3s;animation:plM1BtnPulse 2s ease-in-out infinite}
+.pl_m1_autoplay_btn:hover{background:rgba(255,255,255,.35);transform:scale(1.05)}
+@keyframes plM1Pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes plM1BtnPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.3)}50%{box-shadow:0 0 0 1.5vh rgba(255,255,255,0)}}
+
+/* ==================== FOOTER ==================== */
+.pl_m1_foot{position:relative;z-index:2;margin-top:auto;padding-top:4vh;font-size:1.2vh;color:rgba(255,255,255,.4);font-weight:400}
+.pl_m1_foot a{color:rgba(255,255,255,.6);text-decoration:none;font-weight:600}
+.pl_m1_foot a:hover{color:#fff}
+
+/* ==================== ENTRADA ==================== */
+@keyframes plM1In{from{opacity:0;transform:translateY(2vh)}to{opacity:1;transform:translateY(0)}}

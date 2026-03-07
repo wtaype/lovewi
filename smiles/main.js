@@ -6,7 +6,8 @@ import { miurl, resolver } from './parametros.js';
 if (miurl()) resolver();
 else {
   ['inicio','crear','enviar','plantilla','ejemplos','acerca'].forEach(pg => rutas.register(`/${pg}`, () => import(`./web/${pg}.js`)));
-  rutas.register('/smile', () => getls('wiSmile') ? import('./smile/smile.js') : import('./smile/descubre.js'));
+  ['agregar','smile'].forEach(pg => rutas.register(`/${pg}`, () => import(`./smile/${pg}.js`)));
+  // rutas.register('/smile', () => getls('wiSmile') ? import('./smile/smile.js') : import('./smile/descubre.js'));
   import('./header.js'); 
   rutas.init();
 }
