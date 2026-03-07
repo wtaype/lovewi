@@ -30,7 +30,7 @@ const M = {
       { n:'You Are Somebody', u:'https://raw.githubusercontent.com/geluksee/hopeee/main/You%20are%20Somebody%20Else%20by%20Flora%20Cash.mp3' },
       { n:'I Surrender',      u:'https://raw.githubusercontent.com/geluksee/hopeee/main/I%20Surrender%20-%20Hillsong%20Worship.mp3' },
     ]},
-  Mujer1:      { c:'mujer1',      i:'fa-venus',              k:'Celebración', x:'#ff3849', e:'🩷', b:'linear-gradient(135deg,#ff3849,#ff7a85,#ffccd1)',  d:'Día de la Mujer con estilo rosa vibrante',                              ej:'Eres luz, fuerza e inspiración. Feliz día 🩷',                                             mu:'https://raw.githubusercontent.com/geluksee/nice/main/FloresAmarillas.mp3',
+  Mujer1:      { c:'mujer1',      i:'fa-venus',              k:'Celebración', x:'#ff3849', e:'👸', b:'linear-gradient(135deg,#ff3849,#ff7a85,#ffccd1)',  d:'Día de la Mujer con estilo rosa vibrante',                              ej:'Eres luz, fuerza e inspiración. Feliz día 🩷',                                             mu:'https://raw.githubusercontent.com/geluksee/nice/main/FloresAmarillas.mp3',
     img: 'https://i.postimg.cc/0PfGKG79/image.png',
     musicas: [
       { n:'Flores Amarillas', u:'https://raw.githubusercontent.com/geluksee/nice/main/FloresAmarillas.mp3' },

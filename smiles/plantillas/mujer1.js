@@ -21,7 +21,7 @@ export const render = (d) => {
   return `
 ${tiene ? `
 <div class="pl_m1_autoplay" id="plAutoplay">
-  <span class="pl_m1_autoplay_icon">🩷</span>
+  <span class="pl_m1_autoplay_icon">👸</span>
   <h2>Tienes un mensaje especial</h2>
   <p>${d.de ? `De: ${d.de}` : 'Alguien te admira mucho'}</p>
   <div class="pl_m1_autoplay_btn"><i class="fas fa-play"></i> Toca para abrir</div>
