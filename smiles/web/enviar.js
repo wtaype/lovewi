@@ -236,7 +236,10 @@ async function actualizarPreview() {
     $('#placeholder').hide(); $('#cardContent').show();
     texto.trim() ? $('#cardText').text(texto).show() : $('#cardText').hide();
     $('#btnGuardar').prop('disabled', false); estado.qrOk = true;
-    if (!estado.fondo) $('#cardCanvas').css('background', 'linear-gradient(135deg, #ff6b9d, #c06c84)');
+    if (!estado.fondo) {
+      $('#cardCanvas').css('background', 'repeating-conic-gradient(#e0e0e0 0% 25%, #fff 0% 50%) 0 0 / 20px 20px');
+      $('#formatoSelect').val('png'); actualizarInfo();
+    }
   } catch (err) { console.error(err); Notificacion('Error al generar QR', 'error'); }
 }
 
@@ -328,12 +331,21 @@ async function guardarCard() {
       var offsetVisX = visX;
       var offsetVisY = visY;
     } else {
-      outW = 1920;
-      outH = Math.round(1920 * elH / elW);
-      var scaleOutX = outW / elW;
-      var scaleOutY = outH / elH;
-      var offsetVisX = 0;
-      var offsetVisY = 0;
+      // Sin imagen: ajustar canvas al contenido QR
+      const qrGroupEl = document.getElementById('qrGroup');
+      const qrRect = qrGroupEl.getBoundingClientRect();
+      const canvasR = el.getBoundingClientRect();
+      const pad = 40; // padding en px del preview
+      const contentW = qrRect.width + pad * 2;
+      const contentH = qrRect.height + pad * 2;
+      const scaleFactor = 3; // exportar a 3x para alta resolución
+      outW = Math.round(contentW * scaleFactor);
+      outH = Math.round(contentH * scaleFactor);
+      var scaleOutX = scaleFactor;
+      var scaleOutY = scaleFactor;
+      // offset para que el QR quede centrado con padding
+      var offsetVisX = (qrRect.left - canvasR.left) - pad;
+      var offsetVisY = (qrRect.top - canvasR.top) - pad;
     }
 
     const canvas = document.createElement('canvas');
@@ -344,11 +356,8 @@ async function guardarCard() {
     // 1) Fondo
     if (estado.img) {
       ctx.drawImage(estado.img, cropX, cropY, cropW, cropH, 0, 0, outW, outH);
-    } else {
-      const grd = ctx.createLinearGradient(0, 0, outW, outH);
-      grd.addColorStop(0, '#ff6b9d'); grd.addColorStop(1, '#c06c84');
-      ctx.fillStyle = grd; ctx.fillRect(0, 0, outW, outH);
     }
+    // Sin imagen = fondo transparente (PNG)
 
     // 2) QR + elementos - posiciones relativas al área visible
     const canvasRect = el.getBoundingClientRect();
@@ -392,24 +401,31 @@ async function guardarCard() {
     const textEl = document.getElementById('cardText');
     if (textEl && textEl.style.display !== 'none' && textEl.textContent.trim()) {
       drawElement(textEl, (x, y, w, h) => {
-        ctx.fillStyle = 'rgba(0,0,0,0.3)';
-        roundRect(ctx, x, y, w, h, 8 * scaleOutX);
-        ctx.fill();
+        if (estado.img) {
+          ctx.fillStyle = 'rgba(0,0,0,0.3)';
+          roundRect(ctx, x, y, w, h, 8 * scaleOutX);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = '#ec4899';
+          roundRect(ctx, x, y, w, h, 8 * scaleOutX);
+          ctx.fill();
+        }
 
         const fontSize = parseFloat(getComputedStyle(textEl).fontSize) * scaleOutX;
         ctx.font = `700 ${fontSize}px ${getComputedStyle(textEl).fontFamily}`;
         ctx.fillStyle = '#FFFFFF';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 10 * scaleOutX;
+        if (estado.img) { ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 10 * scaleOutX; }
         ctx.fillText(textEl.textContent, x + w / 2, y + h / 2);
         ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
       });
     }
 
-    // Descargar
-    const ext = formato === 'jpeg' ? 'jpg' : formato;
-    const mimeType = formato === 'jpeg' ? 'image/jpeg' : `image/${formato}`;
+    // Descargar — sin imagen forzar PNG para transparencia
+    const fmt = estado.img ? formato : 'png';
+    const ext = fmt === 'jpeg' ? 'jpg' : fmt;
+    const mimeType = fmt === 'jpeg' ? 'image/jpeg' : `image/${fmt}`;
     canvas.toBlob(blob => {
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
