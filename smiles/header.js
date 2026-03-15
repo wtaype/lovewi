@@ -33,7 +33,7 @@ $(document).on('click', '.bt_salir', async () => {
 });
 
 // LOGIN / REGISTRAR — Firebase se carga solo al hacer click
-$(document).on('click', '.wibtn_auth', async function () {
+$(document).on('click', '.bt_auth', async function () {
   const { abrirLogin } = await import('./smile/login.js');
   abrirLogin($(this).hasClass('registrar') ? 'registrar' : 'login');
 });
