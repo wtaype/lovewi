@@ -1,5 +1,5 @@
 import './ejemplos.css';
-import $ from 'jquery';
+import { $ } from '../widev.js';
 import { plantillas, nombres, categorias } from '../parametros.js';
 
 const esc = (s) => (s || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');

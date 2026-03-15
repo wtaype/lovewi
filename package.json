@@ -15,7 +15,6 @@
   "dependencies": {
     "firebase": "^12.9.0",
     "html2canvas": "^1.4.1",
-    "jquery": "^4.0.0",
     "qrcode": "^1.5.4"
   }
 }

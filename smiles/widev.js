@@ -2,7 +2,6 @@
 import $ from './src/wiquery.js';
 export { $ }; // DOM READY
 
-
 // === 🧠 LOADER SECUENCIAL v14 ===
 export const wiLoad = (() => {
   const carga = new Set(), opt = { rootMargin: '0px 0px -40% 0px', threshold: 0.15 };

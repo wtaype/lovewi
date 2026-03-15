@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import { $ } from '../widev.js';
 import './amistad.css';
 
 export const render = ({ para = '___', de = 'Tu amigo', msg = '', emoji = '💙', musica = '' } = {}) => `

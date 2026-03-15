@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import { $ } from '../widev.js';
 import './declaracion.css';
 
 export const render = ({ para = '___', de = 'Alguien especial', msg = '', emoji = '❤️', musica = '' } = {}) => `

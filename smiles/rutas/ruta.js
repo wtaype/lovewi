@@ -1,6 +1,6 @@
 import { app } from '../wii.js';
-import { $, Notificacion } from '../widev.js';
 import { wiPath, wiFade } from './rutadev.js';
+import { $, Notificacion } from '../widev.js';
 
 class WiRutas {
   constructor() {

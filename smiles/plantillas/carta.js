@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import { $ } from '../widev.js';
 import './carta.css';
 
 export const render = ({ para = '___', de = 'Con amor', msg = '', emoji = '✉️', musica = '' } = {}) => `

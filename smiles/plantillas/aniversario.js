@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import { $ } from '../widev.js';
 import './aniversario.css';
 
 export const render = ({ para = '___', de = 'Tu amor', msg = '', emoji = '🥂', musica = '' } = {}) => `

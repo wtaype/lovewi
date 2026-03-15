@@ -1,5 +1,4 @@
-import $ from 'jquery';
-import { wiSmart } from './widev.js';
+import { $, wiSmart } from './widev.js';
 import { miurl, resolver } from './parametros.js';
 
 if (miurl()) {

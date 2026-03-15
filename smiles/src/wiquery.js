@@ -38,10 +38,10 @@ class wi$ {
   val(v) { if (v === undefined) return this.els[0]?.value ?? ''; _each(this.els, el => el.value = v); return this; }
 
   // CLASSES
-  addClass(c) { _each(this.els, el => el.classList.add(...c.split(' ').filter(Boolean))); return this; }
-  removeClass(c) { _each(this.els, el => el.classList.remove(...c.split(' ').filter(Boolean))); return this; }
+  addClass(c) { if (!c) return this; _each(this.els, el => el.classList.add(...c.split(' ').filter(Boolean))); return this; }
+  removeClass(c) { if (!c) return this; _each(this.els, el => el.classList.remove(...c.split(' ').filter(Boolean))); return this; }
   hasClass(c) { return this.els[0]?.classList.contains(c) ?? false; }
-  toggleClass(c) { _each(this.els, el => c.split(' ').forEach(cl => el.classList.toggle(cl))); return this; }
+  toggleClass(c) { if (!c) return this; _each(this.els, el => c.split(' ').forEach(cl => el.classList.toggle(cl))); return this; }
   is(s) { return this.els[0]?.matches(s) ?? false; }
 
   // ATTRIBUTES
@@ -123,6 +123,7 @@ class wi$ {
     return this;
   }
   off(ev) {
+    if (!ev) return this;
     _each(this.els, el => {
       if (!el._wi) return;
       ev.split(' ').forEach(e => {

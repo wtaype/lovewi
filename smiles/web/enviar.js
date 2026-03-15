@@ -1,8 +1,7 @@
 import './enviar.css';
-import $ from 'jquery';
 import QRCode from 'qrcode';
 import { app } from '../wii.js';
-import { Notificacion, wiTip } from '../widev.js';
+import { $, Notificacion, wiTip } from '../widev.js';
 
 // 📊 Estado
 const estado = {

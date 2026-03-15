@@ -1,5 +1,5 @@
 import './acerca.css';
-import $ from 'jquery';
+import { $ } from '../widev.js';
 
 var features = [
   { i: 'fa-heart', t: 'Hecho con amor', d: 'Cada detalle esta pensado para que tu mensaje sea especial e inolvidable' },

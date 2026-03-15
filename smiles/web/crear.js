@@ -1,6 +1,5 @@
 import './crear.css';
-import $ from 'jquery';
-import { wicopy, wiSpin, wiTip, getls, Notificacion } from '../widev.js';
+import { $, wicopy, wiSpin, wiTip, getls, Notificacion } from '../widev.js';
 import { genURL, genPublica, genPrivada, plantillas, pls, bg } from '../parametros.js';
 
 const esAuth = () => !!getls('wiSmile');

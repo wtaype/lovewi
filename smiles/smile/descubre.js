@@ -1,5 +1,5 @@
 import './descubre.css';
-import $ from 'jquery';
+import { $ } from '../widev.js';
 import { app } from '../wii.js';
 
 // 🎨 HTML

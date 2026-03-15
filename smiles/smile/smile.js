@@ -1,8 +1,7 @@
 import './smile.css';
-import $ from 'jquery';
 import { auth, db } from './firebase.js';
 import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { Notificacion, wicopy, wiTip, getls } from '../widev.js';
+import { $, Notificacion, wicopy, wiTip, getls } from '../widev.js';
 import { app } from '../wii.js';
 
 let mensajes = [];

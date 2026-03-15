@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import { $ } from './widev.js';
 
 // ==================== PLANTILLAS ====================
 const M = {

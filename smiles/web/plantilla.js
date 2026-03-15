@@ -1,5 +1,5 @@
 import './plantilla.css';
-import $ from 'jquery';
+import { $ } from '../widev.js';
 import { plantillas, categorias, porCategoria, nombres } from '../parametros.js';
 
 export const render = () => {
