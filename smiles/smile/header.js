@@ -4,20 +4,19 @@ import { $, Mensaje, wiSmart, wiAuth } from './widev.js';
 // VISTA PERSONAL_________________________________
 export const personal = wi => {
   Mensaje?.('Bienvenido '+wi.nombre);
-  $('.nv_right').html(`
-    <a href="/milab" class="nv_item" data-page="milab"><i class="fa-solid fa-graduation-cap"></i> <span>Mi Lab</span></a>
-    <a href="/smile" class="nv_item" data-page="smile"><i class="fa-solid fa-comments"></i> <span>Mensajes</span></a>
-    <a href="/perfil" class="nv_item" data-page="perfil"><img src="${wi.imagen || './smile.avif'}" alt="${wi.nombre}"><span>${wi.nombre}</span></a>
-    <button class="nv_item bt_salir" data-page="inicio"><i class="fa-solid fa-sign-out-alt"></i> <span>salir</span></button>
+  $('.wiauth').html(`
+    <div class="sesion">
+      <img src="${wi.imagen||'./smile.avif'}" alt="${wi.nombre}"><span>${wi.nombre}</span>
+    </div>
+    <button class="bt_salir"><i class="fas fa-sign-out-alt"></i> <span> Salir </span></button>
   `);
 };
 
 // VISTA PUBLICA_________________________________
 const publico = () => {
-  $('.nv_right').html(`
-    <a href="/descubre" class="nv_item" data-page="descubre"><i class="fa-solid fa-gauge"></i> <span>Descubre </span></a>
-    <button class="bt_auth registrar"><i class="fas fa-user-plus"></i><span>Registrar</span></button>
-    <button class="bt_auth login"><i class="fas fa-sign-in-alt"></i><span>Login</span></button>  
+    $('.wiauth').html(`
+      <button class="wibtn_auth registrar" aria-label="Crear cuenta"><i class="fas fa-user-plus" aria-hidden="true"></i><span>Registrar</span></button>
+      <button class="wibtn_auth login" aria-label="Iniciar sesión"><i class="fas fa-sign-in-alt" aria-hidden="true"></i><span>Login</span></button>
   `);
 };
 

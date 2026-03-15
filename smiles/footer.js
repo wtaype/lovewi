@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import { $ } from './widev.js';
 import {app, lanzamiento, autor, link, version} from './wii.js';
 
 export { footer };
@@ -15,12 +15,17 @@ function footer(){
 }; $('body').append(footer());  //Actualizar 
 
 $("head").append(`<style>:root{--bgim:url("${import.meta.env.BASE_URL}wpuntos.svg")}body{background: var(--bgim), var(--bg)}</style>`)
-$('.wimenu').on('click', function(){$('.wiheader').toggleClass('movil'); $(this).find('i').toggleClass('fa-bars fa-times')});
 
-const heroImg = () => {
-  const $h = $('.hero_imagen');
-  if ($h.length) $h.append(`<img src="${import.meta.env.BASE_URL}amor.webp" alt="Lovewi - Mensajes de Amor">`);
-  else requestAnimationFrame(heroImg);
-};
-heroImg();
-console.log(`✅ ${app} : ${version}`)
+// MOBILE DRAWER v1.0
+$('body').append(`
+  <div class="movil_overlay"></div>
+  <nav class="movil_drawer" role="navigation" aria-label="Menú móvil">
+    <button class="movil_close" aria-label="Cerrar menú"><i class="fas fa-times" aria-hidden="true"></i></button>
+    <div class="movil_logo"><i class="fas fa-code" aria-hidden="true"></i> Wilder Taype</div>
+    <div class="movil_nav">${$('.winav').html()}</div>
+  </nav>
+`);
+const cerrarMovil = () => $('body').removeClass('movil_open');
+$('.wimenu').on('click', () => $('body').addClass('movil_open'));
+$('.movil_close, .movil_overlay').on('click', cerrarMovil);
+$(document).on('click', '.movil_nav .nv_item', cerrarMovil);

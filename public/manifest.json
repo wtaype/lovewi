@@ -1,0 +1,17 @@
+{
+  "name": "Lovewi - Mensajes de Amor Personalizados",
+  "short_name": "Lovewi",
+  "description": "Crea mensajes de amor personalizados para San Valentín y fechas especiales. Dedicatorias románticas 100% gratis.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffccd1",
+  "theme_color": "#FF5C69",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/smile.avif",
+      "sizes": "any",
+      "type": "image/avif"
+    }
+  ]
+}

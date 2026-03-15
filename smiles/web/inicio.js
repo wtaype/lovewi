@@ -1,7 +1,6 @@
 import './inicio.css';
-import $ from 'jquery';
 import { app, version } from '../wii.js';
-import { wiVista, year } from '../widev.js';
+import { $, wiVista, year } from '../widev.js';
 
 export const render = () => `
   <div class="inicio">
@@ -38,7 +37,7 @@ export const render = () => `
         </div>
       </div>
       <div class="hero_imagen">
-        
+        <span class="img_inicio"></span>
         <div class="hero_decoracion">
           <i class="fas fa-heart"></i>
           <i class="fas fa-heart"></i>
@@ -244,7 +243,7 @@ export const render = () => `
 export const init = () => {
   // Animaciones con Intersection Observer
   ['.caracteristica', '.ejemplo', '.paso', '.testimonio'].forEach(sel => {
-    $(sel).each((_, el) => wiVista(el, () => $(el).addClass('visible')));
+    wiVista(sel, (el) => $(el).addClass('visible'));
   });
 
   // Scroll suave
