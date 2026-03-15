@@ -6,14 +6,15 @@ const _noPx = new Set('animationIterationCount,columnCount,fillOpacity,flexGrow,
 const _px = (k, v) => typeof v === 'number' && !_noPx.has(k) ? v + 'px' : v;
 
 class wi$ {
-  constructor(els) { this.els = els; this.length = els.length; els.forEach((el, i) => this[i] = el); }
+  constructor(els, prev) { this.els = els; this.length = els.length; this._prev = prev; els.forEach((el, i) => this[i] = el); }
 
   // TRAVERSAL — public each is jQuery-compatible: fn(index, element), this = element
   each(fn) { this.els.forEach((el, i) => fn.call(el, i, el)); return this; }
   eq(i) { return new wi$(this.els[i] ? [this.els[i]] : []); }
   first() { return this.eq(0); }
   last() { return this.eq(this.els.length - 1); }
-  find(s) { return new wi$(this.els.flatMap(el => qsa(s, el))); }
+  find(s) { return new wi$(this.els.flatMap(el => qsa(s, el)), this); }
+  end() { return this._prev || new wi$([]); }
   filter(s) {
     if (typeof s === 'function') return new wi$(this.els.filter(s));
     let els = [...this.els];
@@ -31,6 +32,9 @@ class wi$ {
   siblings(s) { const el = this.els[0]; const sibs = el ? [...el.parentElement.children].filter(c => c !== el) : []; return new wi$(s ? sibs.filter(c => c.matches(s)) : sibs); }
   next() { const n = this.els[0]?.nextElementSibling; return new wi$(n ? [n] : []); }
   prev() { const p = this.els[0]?.previousElementSibling; return new wi$(p ? [p] : []); }
+  nextAll(s) { const r = []; let n = this.els[0]?.nextElementSibling; while (n) { if (!s || n.matches(s)) r.push(n); n = n.nextElementSibling; } return new wi$(r); }
+  prevAll(s) { const r = []; let p = this.els[0]?.previousElementSibling; while (p) { if (!s || p.matches(s)) r.push(p); p = p.previousElementSibling; } return new wi$(r); }
+  index() { const el = this.els[0]; return el ? [...el.parentElement.children].indexOf(el) : -1; }
 
   // CONTENT
   html(v) { if (v === undefined) return this.els[0]?.innerHTML ?? ''; _each(this.els, el => el.innerHTML = v); return this; }

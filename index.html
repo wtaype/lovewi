@@ -260,10 +260,8 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
 .foo{width:100%;text-align:center;padding-block:1.5vh 1vh;background:var(--wb);border-radius:1vh 1vh 0 0}
 .foo *{font-size:var(--fz_s2);margin-inline:.3vh;color:var(--tx);}
 
-/* ==================== UTILIDADES ==================== */
-.txc{text-align:center}
+/* ==================== UTILIDADES EXTRA ==================== */
 .df{display:flex}
-.dpn{display:none}
 .dfc{display:flex;justify-content:center;align-items:center}
 .dfw{display:flex;justify-content:space-between;align-items:center}
 .dfcc{display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center}
@@ -297,12 +295,20 @@ body.movil_open .movil_drawer{transform:translateX(0)}
 .movil_nav .nv_item span{font-size:var(--fz_m2)}
 .movil_nav .nv_item.active{color:var(--mco);font-weight:700;background:var(--bg4);border-radius:.6vh}
 .movil_nav .nv_item.active i{color:var(--mco)}
+.movil_divider{height:1px;background:var(--brd);margin:1vh 2.5vh}
+.movil_nav .bt_auth{display:flex;align-items:center;justify-content:flex-start;gap:2.5vh;padding:2.5vh 2.5vh;color:var(--tx);font-size:var(--fz_m2);font-weight:500;border-bottom:1px solid var(--brd);background:none;border-radius:0;box-shadow:none;width:100%;text-align:left;cursor:pointer}
+.movil_nav .bt_auth:last-child{border-bottom:none}
+.movil_nav .bt_auth i{font-size:var(--fz_l1);color:var(--mco);min-width:3vh}
+.movil_nav .bt_auth span{font-size:var(--fz_m2)}
+.movil_nav .bt_auth:hover{background:var(--bg4);border-radius:.6vh}
+.movil_nav .bt_salir{color:var(--error)}
+.movil_nav .bt_salir i{color:var(--error)}
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width:768px){
 #wimain{padding:0}
 .wiheader{height:auto;padding:1.5vh 4vh 1.5vh 1.5vh}
-.winav,.wiauth{display:none}
+.winav,.wiauth,.nv_right{display:none}
 .nv_left{justify-content:space-between;width:100%}
 .wilogo{font-size:var(--fz_m4)}
 .winav{gap:1vh}
@@ -348,11 +354,11 @@ body.movil_open .movil_drawer{transform:translateX(0)}
   <main id="wimain"></main>
 
   <div id="wiTema">
-    <div class="tema" data-ths="Cielo|#0EBEFF"></div>
-    <div class="tema mtha" data-ths="Dulce|#FF5C69"></div>
-    <div class="tema" data-ths="Paz|#29C72E"></div>
-    <div class="tema" data-ths="Mora|#7000FF"></div>
-    <div class="tema" data-ths="Futuro|#21273B"></div>
+    <div class="tema" data-ths="Cielo|#0EBEFF" aria-label="Tema Cielo" role="button" tabindex="0"></div>
+    <div class="tema mtha" data-ths="Dulce|#FF5C69" aria-label="Tema Dulce" role="button" tabindex="0"></div>
+    <div class="tema" data-ths="Paz|#29C72E" aria-label="Tema Paz" role="button" tabindex="0"></div>
+    <div class="tema" data-ths="Mora|#7000FF" aria-label="Tema Mora" role="button" tabindex="0"></div>
+    <div class="tema" data-ths="Futuro|#21273B" aria-label="Tema Futuro" role="button" tabindex="0"></div>
   </div>
 </body>
 <script>(()=>{const d=document,h=d.documentElement,w=d.querySelector('#wiTema');if(!w)return;const ts=[...w.querySelectorAll('.tema')],m=d.querySelector('meta[name="theme-color"]')||d.head.appendChild(Object.assign(d.createElement('meta'),{name:'theme-color'})),st=t=>{const[n,c]=t.dataset.ths.split('|');h.dataset.theme=n;m.content=c;localStorage.wiTema=t.dataset.ths;ts.forEach(x=>x.classList.toggle('mtha',x===t))};w.addEventListener('click',e=>e.target.matches('.tema')&&st(e.target),{passive:!0});const i=w.querySelector(`[data-ths="${localStorage.wiTema}"]`)||ts[1];i&&st(i)})();</script>

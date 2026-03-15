@@ -1,4 +1,4 @@
-const CACHE = 'wicache';
+const CACHE = 'wicache-v16';
 const STATIC = ['/', '/smile.avif', '/wilder.webp', '/poster.webp', '/wpuntos.svg', '/manifest.json'];
 
 self.addEventListener('install', e => {

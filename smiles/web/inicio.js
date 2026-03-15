@@ -256,19 +256,19 @@ export const init = () => {
   });
 
   // Animación de corazones flotantes
-  setInterval(() => {
+  const heartInterval = setInterval(() => {
     const heart = $('<i class="fas fa-heart floating-heart"></i>');
     const left = Math.random() * 90 + 5;
     heart.css({ left: `${left}%`, animationDuration: `${Math.random() * 2 + 3}s` });
     $('.hero_decoracion').append(heart);
     setTimeout(() => heart.remove(), 5000);
   }, 2000);
+  window._wiHeartInterval = heartInterval;
 
-  console.log(`💌 ${app} ${version} - Inicio profesional cargado`);
 };
 
 export const cleanup = () => {
+  clearInterval(window._wiHeartInterval);
   $('a[href^="#"]').off('click');
   $('.floating-heart').remove();
-  console.log('🧹 Inicio limpiado');
 };
