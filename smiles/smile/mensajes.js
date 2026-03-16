@@ -1,16 +1,18 @@
 import './mensajes.css';
 import { auth, db } from './firebase.js';
-import { collection, setDoc, doc, query, where, onSnapshot, deleteDoc, serverTimestamp } from 'firebase/firestore';
-import { $, Notificacion, wicopy, wiTip, getls, Saludar } from '../widev.js';
+import { collection, setDoc, doc, query, where, getDocs, deleteDoc, serverTimestamp, limit } from 'firebase/firestore';
+import { $, Notificacion, wicopy, wiTip, savels, getls, Saludar } from '../widev.js';
 import { rutas } from '../rutas/ruta.js';
 import { app } from '../wii.js';
 
-// ── Estado y caché ───────────────────────────────────────────
-let msgs = [], unsub = null, pendiente = null;
-const CACHE  = 'wi_mensajes_cache';
-const wi     = () => getls('wiSmile') || {};
-const _save  = d  => { try { localStorage.setItem(CACHE, JSON.stringify(d)); } catch (_) {} };
+// ── Estado ───────────────────────────────────────────────────
+let msgs = [], pendiente = null, enviando = false, refreshTimer = null, _onVis = null;
+const CACHE = 'wi_mensajes_cache';
+const LIMIT = 50;
+const wi = () => getls('wiSmile') || {};
+const _save = d => { try { localStorage.setItem(CACHE, JSON.stringify(d)); } catch (_) {} };
 const _cache = () => { try { return JSON.parse(localStorage.getItem(CACHE) || '[]'); } catch (_) { return []; } };
+const _scroll = () => { const el = document.getElementById('wmChat'); el && requestAnimationFrame(() => el.scrollTop = el.scrollHeight); };
 
 // ── Render ───────────────────────────────────────────────────
 export const render = () => {
@@ -30,7 +32,7 @@ export const render = () => {
       </div>
       <div class="wm_status">
         <span class="wm_dot"></span>
-        <span class="wm_dotxt">Cargando...</span>
+        <span class="wm_dotxt">Conectando...</span>
       </div>
     </div>
 
@@ -60,6 +62,8 @@ export const render = () => {
 
 // ── Init ─────────────────────────────────────────────────────
 export const init = () => {
+  cleanup();
+
   const u = wi();
   if (!u.email) return rutas.navigate('/');
   const userEmail = u.email || auth.currentUser?.email;
@@ -83,69 +87,114 @@ export const init = () => {
     .on('click.wm', '#wmCancel, #wmEliminar', e => { $(e.target).is('#wmCancel, #wmEliminar') && ($('#wmEliminar').removeClass('show'), pendiente = null); })
     .on('click.wm', '#wmConfirm', _eliminar);
 
-  unsub = onSnapshot(
-    query(collection(db, 'wiMensajes'), where('email', '==', userEmail)),
-    { includeMetadataChanges: false },
-    snap => {
-      msgs = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.fecha?.seconds || 0) - (a.fecha?.seconds || 0));
-      _save(msgs); $('#wmChat').html(_htmlList(msgs)); _status(true);
-    },
-    err => {
-      console.error('❌', err); _status(false);
+  // Mostrar cache inmediato, luego sync en background
+  _cargar(userEmail, true);
+
+  // Auto-refresh cada 30s solo si tab visible
+  refreshTimer = setInterval(() => !document.hidden && _cargar(userEmail, true), 30000);
+  _onVis = () => { !document.hidden && _cargar(userEmail, true); };
+  document.addEventListener('visibilitychange', _onVis);
+  _scroll();
+};
+
+// ── Cargar (getDocs = 1 read batch, no listener permanente) ──
+const _cargar = async (email, silent = false) => {
+  try {
+    const q = query(collection(db, 'wiMensajes'), where('email', '==', email), limit(LIMIT));
+    const snap = await getDocs(q);
+    msgs = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.fecha?.seconds || 0) - (b.fecha?.seconds || 0));
+    _save(msgs); $('#wmChat').html(_htmlList(msgs)); _status(true); _scroll();
+  } catch (e) {
+    console.error('❌', e); _status(false);
+    if (!silent) {
       const cache = _cache();
       cache.length ? (msgs = cache, $('#wmChat').html(_htmlList(msgs)), Notificacion('Caché local 📦', 'warning', 2000))
         : $('#wmChat').html(_empty('fa-wifi-slash', 'Sin conexión', 'Verifica tu internet'));
     }
-  );
+  }
 };
 
-// ── Enviar ───────────────────────────────────────────────────
-const _enviar = async (email) => {
+// ── Enviar (optimistic UI: aparece al instante, Firestore en background) ──
+const _enviar = (email) => {
+  if (enviando) return;
   const $ta = $('#wmNuevo'), nota = $ta.val().trim();
   if (!nota) return;
+  enviando = true;
   const { usuario = '', nombre = '' } = wi();
   const id = `m${Date.now()}`;
-  const $btn = $('#wmEnviar').prop('disabled', true).html('<i class="fas fa-spinner fa-pulse"></i>');
-  try {
-    await setDoc(doc(db, 'wiMensajes', id), { id, mensaje: nota, email, usuario: nombre || usuario || email, fecha: serverTimestamp() });
-    $ta.val('').css('height', 'auto').trigger('focus'); $('#wmCount').text('0/500');
-  } catch (e) { console.error('❌', e); Notificacion('Error al guardar', 'error'); }
-  finally { $btn.prop('disabled', false).html('<i class="fas fa-paper-plane"></i>'); }
+
+  // UI instantánea
+  const fake = { id, mensaje: nota, email, usuario: nombre || usuario || email, fecha: { seconds: Date.now() / 1000 } };
+  msgs.push(fake); _save(msgs);
+  $('#wmChat').html(_htmlList(msgs)); _scroll();
+  $ta.val('').css('height', 'auto').trigger('focus'); $('#wmCount').text('0/500');
+  $('#wmEnviar').prop('disabled', true);
+
+  // Background write
+  setDoc(doc(db, 'wiMensajes', id), { id, mensaje: nota, email, usuario: nombre || usuario || email, fecha: serverTimestamp() })
+    .then(() => { _status(true); })
+    .catch(e => { console.error('❌', e); msgs = msgs.filter(m => m.id !== id); _save(msgs); $('#wmChat').html(_htmlList(msgs)); Notificacion('Error al guardar', 'error'); })
+    .finally(() => { enviando = false; });
 };
 
-// ── Eliminar ─────────────────────────────────────────────────
-const _eliminar = async () => {
+// ── Eliminar (optimistic: desaparece al instante) ──
+const _eliminar = () => {
   if (!pendiente) return;
   const id = pendiente; pendiente = null;
   $('#wmEliminar').removeClass('show');
+
+  // UI instantánea
+  const backup = [...msgs];
+  msgs = msgs.filter(m => m.id !== id); _save(msgs);
   $(`.wm_item[data-id="${id}"]`).addClass('deleting');
-  try { await deleteDoc(doc(db, 'wiMensajes', id)); Notificacion('Mensaje eliminado 🗑️', 'success', 1500); }
-  catch (e) { console.error('❌', e); $(`.wm_item[data-id="${id}"]`).removeClass('deleting'); Notificacion('Error al eliminar', 'error'); }
+  setTimeout(() => { $('#wmChat').html(_htmlList(msgs)); }, 250);
+
+  // Background delete
+  deleteDoc(doc(db, 'wiMensajes', id))
+    .then(() => Notificacion('Eliminado 🗑️', 'success', 1200))
+    .catch(e => { console.error('❌', e); msgs = backup; _save(msgs); $('#wmChat').html(_htmlList(msgs)); Notificacion('Error al eliminar', 'error'); });
 };
 
 // ── Helpers ──────────────────────────────────────────────────
-const _status = ok => { $('.wm_dot').toggleClass('active', ok).toggleClass('error', !ok); $('.wm_dotxt').text(ok ? 'En vivo' : 'Desconectado'); };
+const _status = ok => { $('.wm_dot').removeClass('active error').addClass(ok ? 'active' : 'error'); $('.wm_dotxt').text(ok ? 'Online' : 'Offline'); };
 
-const _htmlList = list => list?.length
-  ? list.map(m => `
-    <div class="wm_item" data-id="${m.id}" ${wiTip('Click para copiar')}>
-      <div class="wm_bubble">
-        <p class="wm_txt">${_esc(m.mensaje).replace(/\n/g, '<br>')}</p>
-        <div class="wm_foot"><span class="wm_date">${_fecha(m.fecha)}</span><i class="fas fa-check-double wm_check"></i></div>
-      </div>
-      <button class="wm_del" data-id="${m.id}" ${wiTip('Eliminar')}><i class="fas fa-trash"></i></button>
-    </div>`).join('')
-  : _empty('fa-comment-dots', 'Sin mensajes aún', 'Escribe tu primer mensaje 👇');
-
-const _empty = (ico, txt, sub) => `<div class="wm_empty"><i class="fas ${ico}"></i><p>${txt}</p><span>${sub}</span></div>`;
-
-const _esc = t => String(t || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[c]));
-
-const _fecha = ts => {
-  if (!ts) return 'Ahora';
-  const d = ts.toDate?.() || new Date((ts.seconds || 0) * 1000), df = Date.now() - d;
-  const m = ~~(df / 6e4), h = ~~(df / 36e5), dias = ~~(df / 864e5);
-  return m < 1 ? 'Ahora' : m < 60 ? `${m}m` : h < 24 ? `${h}h` : dias < 7 ? `${dias}d` : d.toLocaleDateString('es', { day:'2-digit', month:'short' });
+const _dateLabel = ts => {
+  if (!ts) return 'Hoy';
+  const d = ts.toDate?.() || new Date((ts.seconds || 0) * 1000);
+  const hoy = new Date(), ayer = new Date(hoy);
+  hoy.setHours(0, 0, 0, 0); ayer.setDate(ayer.getDate() - 1); ayer.setHours(0, 0, 0, 0);
+  return d >= hoy ? 'Hoy' : d >= ayer ? 'Ayer' : d.toLocaleDateString('es', { day: 'numeric', month: 'long' });
 };
 
-export const cleanup = () => { unsub?.(); $(document).off('.wm'); [msgs, unsub, pendiente] = [[], null, null]; };
+const _hora = ts => {
+  if (!ts) return 'Ahora';
+  const d = ts.toDate?.() || new Date((ts.seconds || 0) * 1000);
+  return d.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
+};
+
+const _htmlList = list => {
+  if (!list?.length) return _empty('fa-comment-dots', 'Sin mensajes aún', 'Escribe tu primer mensaje 👇');
+  let lastLabel = '';
+  return list.map(m => {
+    const label = _dateLabel(m.fecha);
+    const sep = label !== lastLabel ? `<div class="wm_sep"><span>${label}</span></div>` : '';
+    lastLabel = label;
+    return `${sep}<div class="wm_item" data-id="${m.id}" ${wiTip('Click para copiar')}>
+      <div class="wm_bubble">
+        <p class="wm_txt">${_esc(m.mensaje).replace(/\n/g, '<br>')}</p>
+        <div class="wm_foot"><span class="wm_time">${_hora(m.fecha)}</span><i class="fas fa-check-double wm_check"></i></div>
+      </div>
+      <button class="wm_del" data-id="${m.id}" ${wiTip('Eliminar')}><i class="fas fa-trash"></i></button>
+    </div>`;
+  }).join('');
+};
+
+const _empty = (ico, txt, sub) => `<div class="wm_empty"><i class="fas ${ico}"></i><p>${txt}</p><span>${sub}</span></div>`;
+const _esc = t => String(t || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[c]));
+
+export const cleanup = () => {
+  clearInterval(refreshTimer); refreshTimer = null;
+  if (_onVis) { document.removeEventListener('visibilitychange', _onVis); _onVis = null; }
+  $(document).off('.wm');
+  [msgs, pendiente, enviando] = [[], null, false];
+};

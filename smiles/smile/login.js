@@ -10,7 +10,7 @@ export { auth, onAuthStateChanged, signOut };
 
 // ==================== CONFIG ====================
 const cfg = { db: 'smiles', rol: 'smile' };
-let modal = 'si', link = 'no', restablecer = 'no', login = 'si', registrar = 'no';
+let modal = 'si', link = 'no', restablecer = 'no', login = 'si', registrar = 'si';
 let pagina = '/smile'; // 'actual' = quedarse, '/proyectos', '/smile', '/'
 let registrando = false;
 

@@ -9,34 +9,38 @@
 .wm_text p { font-size: var(--fz_m1); color: rgba(255,255,255,.85); margin: 0 }
 .wm_status { display: flex; align-items: center; gap: .8vh; background: rgba(255,255,255,.15); padding: .8vh 1.5vh; border-radius: 50px }
 .wm_dot { width: 1vh; height: 1vh; border-radius: 50%; background: #94a3b8; animation: wmPulse 2s infinite }
-.wm_dot.active { background: #4ade80; box-shadow: 0 0 1vh #4ade80 }
+.wm_dot.active { background: var(--success, #4ade80); box-shadow: 0 0 1vh var(--success, #4ade80); animation: none }
 .wm_dot.error { background: #ef4444; animation: none }
 @keyframes wmPulse { 0%,100% { opacity: 1; transform: scale(1) } 50% { opacity: .5; transform: scale(.9) } }
 .wm_dotxt { font-size: var(--fz_s4); color: var(--txa); font-weight: 600 }
 
 /* ==================== CHAT ==================== */
-.wm_chat { flex: 1; overflow-y: auto; padding: 2vh; background: var(--wb); scrollbar-width: thin; scrollbar-color: var(--mco) var(--bg4) }
+.wm_chat { flex: 1; overflow-y: auto; padding: 2vh; background: var(--wb); scrollbar-width: thin; scrollbar-color: var(--mco) var(--bg4); display: flex; flex-direction: column }
 .wm_chat::-webkit-scrollbar { width: .6vh }
 .wm_chat::-webkit-scrollbar-thumb { background: var(--mco); border-radius: 1vh }
 
-/* EMPTY / LOADING */
-.wm_loading, .wm_empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 2vh; color: var(--tx2); text-align: center }
+/* DATE SEPARATOR */
+.wm_sep { display: flex; align-items: center; justify-content: center; padding: 1.5vh 0; position: sticky; top: 0; z-index: 5 }
+.wm_sep span { background: var(--bg1); color: var(--tx2); font-size: var(--fz_s4); font-weight: 600; padding: .5vh 1.5vh; border-radius: 50px; box-shadow: 0 .2vh .6vh rgba(0,0,0,.08); border: 1px solid var(--brd) }
+
+/* EMPTY */
+.wm_loading, .wm_empty { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 2vh; color: var(--tx2); text-align: center }
 .wm_loading i { font-size: 5vh; color: var(--mco) }
 .wm_empty i { font-size: 8vh; color: var(--tx3); opacity: .3; margin-bottom: 1vh }
 .wm_empty p { font-size: var(--fz_m4); font-weight: 600; color: var(--tx); margin: 0 0 1vh }
 .wm_empty span { font-size: var(--fz_m2); color: var(--tx2) }
 
 /* MESSAGE ITEM */
-.wm_item { display: flex; align-items: flex-end; gap: 1vh; margin-bottom: 1.5vh; animation: wmSlide .3s ease-out; cursor: pointer; position: relative; transition: all .3s }
+.wm_item { display: flex; align-items: flex-end; gap: 1vh; margin-bottom: 1vh; animation: wmSlide .3s ease-out; cursor: pointer; position: relative; transition: all .3s }
 @keyframes wmSlide { from { opacity: 0; transform: translateY(1vh) } to { opacity: 1; transform: translateY(0) } }
 .wm_item:hover { transform: translateX(.5vh) }
 .wm_bubble { flex: 1; background: var(--mco); padding: 1.5vh 2vh; border-radius: 1.2vh 1.2vh .3vh 1.2vh; box-shadow: 0 .3vh 1vh rgba(0,0,0,.1); transition: all .3s; position: relative; overflow: hidden }
 .wm_item:hover .wm_bubble { box-shadow: 0 .5vh 1.5vh rgba(0,0,0,.15); transform: translateY(-.2vh) }
 .wm_bubble::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: .3vh; background: rgba(255,255,255,.3) }
-.wm_txt { font-size: var(--fz_m2); color: var(--txa); line-height: 1.5; word-wrap: break-word; white-space: pre-wrap; margin: 0 0 1vh }
-.wm_foot { display: flex; justify-content: space-between; align-items: center; gap: 1vh }
-.wm_date { font-size: var(--fz_s3); color: rgba(255,255,255,.7); font-weight: 500 }
-.wm_check { font-size: var(--fz_m1); color: rgba(255,255,255,.8) }
+.wm_txt { font-size: var(--fz_m2); color: var(--txa); line-height: 1.5; word-wrap: break-word; white-space: pre-wrap; margin: 0 0 .8vh }
+.wm_foot { display: flex; justify-content: flex-end; align-items: center; gap: .6vh }
+.wm_time { font-size: var(--fz_s3); color: rgba(255,255,255,.7); font-weight: 500 }
+.wm_check { font-size: var(--fz_s4); color: rgba(255,255,255,.8) }
 .wm_item.copied .wm_check { color: #4ade80; animation: wmBounce .5s ease-out }
 @keyframes wmBounce { 0%,100% { transform: scale(1) } 50% { transform: scale(1.3) } }
 
@@ -83,7 +87,7 @@
   .wm_status { padding: .6vh 1.2vh }
   .wm_dotxt { font-size: var(--fz_s3) }
   .wm_chat { padding: 1.5vh }
-  .wm_item { margin-bottom: 1vh }
+  .wm_item { margin-bottom: .8vh }
   .wm_bubble { padding: 1.2vh 1.8vh }
   .wm_txt { font-size: var(--fz_m1) }
   .wm_input { padding: 1.5vh }
