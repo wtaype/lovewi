@@ -6,7 +6,7 @@ if (miurl()) {
 } else {
   const [, { rutas }] = await Promise.all([import('./header.js'), import('./rutas/ruta.js')]);
   ['inicio','crear','enviar','plantilla','ejemplos','acerca'].forEach(pg => rutas.register(`/${pg}`, () => import(`./web/${pg}.js`)));
-  ['agregar','smile'].forEach(pg => rutas.register(`/${pg}`, () => import(`./smile/${pg}.js`)));
+  ['agregar','smile', 'descubre','perfil', 'milab','mensajes'].forEach(pg => rutas.register(`/${pg}`, () => import(`./smile/${pg}.js`)));
   rutas.init();
 }
 
