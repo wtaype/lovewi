@@ -1,8 +1,14 @@
 import './smile.css';
 import { auth, db } from './firebase.js';
+import { onAuthStateChanged } from 'firebase/auth';
 import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { $, Notificacion, wicopy, wiTip, getls } from '../widev.js';
 import { app } from '../wii.js';
+
+const waitAuth = () => new Promise(r => {
+  if (auth.currentUser) return r(auth.currentUser);
+  const unsub = onAuthStateChanged(auth, u => { unsub(); r(u); });
+});
 
 let mensajes = [];
 let eliminarId = null;
@@ -55,7 +61,8 @@ export const render = () => `
 export const init = async () => {
   console.log(`✅ Smile de ${app}`);
   
-  if (!auth.currentUser) return Notificacion('Debes iniciar sesión', 'error'), window.location.hash = '#/auth?mode=login';
+  const user = await waitAuth();
+  if (!user) return Notificacion('Debes iniciar sesión', 'error'), window.location.hash = '#/auth?mode=login';
 
   const wi = getls('wiSmile');
   $('#smileUser').html(`<i class="fas fa-user"></i> ${wi?.usuario || auth.currentUser.email} • ${wi?.email || auth.currentUser.email}`);
